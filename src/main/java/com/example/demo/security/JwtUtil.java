@@ -1,46 +1,37 @@
 package com.example.demo.security;
 
-import java.util.Date;
-import java.util.Map;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.*;
+
+import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "secretkey123";
+    @Value("${jwt.secret}")
+    private String secret;
 
-    public String generateToken(Map<String, Object> claims, String subject) {
+    @Value("${jwt.expiration}")
+    private long expiration;
+
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
-    public Claims parseToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+    public String extractUsername(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
-    }
 
-    public String extractUsername(String token) {
-        return parseToken(token).getSubject();
-    }
-
-    public String extractRole(String token) {
-        return parseToken(token).get("role", String.class);
-    }
-
-    public Long extractUserId(String token) {
-        return parseToken(token).get("userId", Long.class);
-    }
-
-    public boolean isTokenValid(String token, String username) {
-        return extractUsername(token).equals(username);
+        return claims.getSubject();
     }
 }
-
