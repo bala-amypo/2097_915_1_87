@@ -1,41 +1,29 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "emission_factors")
 public class EmissionFactor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    private ActivityType activityType;
-
     private Double factorValue;
 
-    private String unit;
+    @ManyToOne
+    private ActivityType activityType;
 
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
+    // Getters & Setters
+    public Double getFactorValue() {
+        return factorValue;
     }
 
-    public EmissionFactor() {}
-
-    public EmissionFactor(Long id, ActivityType activityType,
-                          Double factorValue, String unit,
-                          LocalDateTime createdAt) {
-        this.id = id;
-        this.activityType = activityType;
+    public void setFactorValue(Double factorValue) {
         this.factorValue = factorValue;
-        this.unit = unit;
-        this.createdAt = createdAt;
     }
 
-    // Getters and Setters
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
 }

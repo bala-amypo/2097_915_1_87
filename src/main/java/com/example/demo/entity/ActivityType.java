@@ -1,43 +1,42 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "activity_types")
 public class ActivityType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String typeName;
-
-    @ManyToOne(optional = false)
-    private ActivityCategory category;
-
-    @Column(nullable = false)
+    private String name;
     private String unit;
 
-    private LocalDateTime createdAt;
+    @ManyToOne
+    private ActivityCategory category;
 
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
+    // Getters & Setters
+    public Long getId() {
+        return id;
     }
 
-    public ActivityType() {}
+    public String getUnit() {
+        return unit;
+    }
 
-    public ActivityType(Long id, String typeName,
-                        ActivityCategory category, String unit,
-                        LocalDateTime createdAt) {
+    public ActivityCategory getCategory() {
+        return category;
+    }
+
+    public void setId(Long id) {
         this.id = id;
-        this.typeName = typeName;
-        this.category = category;
-        this.unit = unit;
-        this.createdAt = createdAt;
     }
 
-    // Getters and Setters
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public void setCategory(ActivityCategory category) {
+        this.category = category;
+    }
 }

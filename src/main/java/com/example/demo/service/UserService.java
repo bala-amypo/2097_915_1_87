@@ -4,9 +4,12 @@ import java.util.List;
 import com.example.demo.entity.User;
 
 public interface UserService {
-    User create(User user);
-    User get(Long id);
-    List<User> getAll();
-    User update(Long id, User user);
+
+    User register(User user);
+
+    User getUser(Long id);
+
+    List<User> getAllUsers();
+
     void delete(Long id);
 }
