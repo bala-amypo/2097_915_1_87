@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -15,13 +14,16 @@ public class ActivityLog {
 
     private LocalDate activityDate;
 
+    private Double estimatedEmission;
+
     @ManyToOne
     private User user;
 
     @ManyToOne
     private ActivityType activityType;
 
-    // Getters & Setters
+    // ===== Getters & Setters =====
+
     public Double getQuantity() {
         return quantity;
     }
@@ -30,12 +32,20 @@ public class ActivityLog {
         return activityDate;
     }
 
+    public Double getEstimatedEmission() {
+        return estimatedEmission;
+    }
+
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
     public void setActivityDate(LocalDate activityDate) {
         this.activityDate = activityDate;
+    }
+
+    public void setEstimatedEmission(Double estimatedEmission) {
+        this.estimatedEmission = estimatedEmission;
     }
 
     public void setUser(User user) {

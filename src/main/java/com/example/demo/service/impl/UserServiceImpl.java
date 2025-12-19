@@ -12,6 +12,10 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Override
+    public void delete(Long id) {
+    repo.deleteById(id);
+}
 
     private final UserRepository repo;
     private final PasswordEncoder encoder;
