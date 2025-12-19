@@ -1,40 +1,51 @@
-// package com.example.demo.entity;
+package com.example.demo.entity;
 
-// import java.time.LocalDate;
-// import jakarta.persistence.*;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-// @Entity
-// public class ActivityLog {
+@Entity
+@Table(name = "activity_logs")
+public class ActivityLog {
 
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-//     private Double quantity;
-//     private LocalDate activityDate;
+    @ManyToOne(optional = false)
+    private ActivityType activityType;
 
-//     @ManyToOne
-//     private User user;
+    @ManyToOne(optional = false)
+    private User user;
 
-//     @ManyToOne
-//     private ActivityType activityType;
+    private Double quantity;
 
-//     public Long getId() { return id; }
-//     public void setId(Long id) { this.id = id; }
+    private LocalDate activityDate;
 
-//     public Double getQuantity() { return quantity; }
-//     public void setQuantity(Double quantity) { this.quantity = quantity; }
+    private LocalDateTime loggedAt;
 
-//     public LocalDate getActivityDate() { return activityDate; }
-//     public void setActivityDate(LocalDate activityDate) {
-//         this.activityDate = activityDate;
-//     }
+    private Double estimatedEmission;
 
-//     public User getUser() { return user; }
-//     public void setUser(User user) { this.user = user; }
+    @PrePersist
+    public void onCreate() {
+        loggedAt = LocalDateTime.now();
+    }
 
-//     public ActivityType getActivityType() { return activityType; }
-//     public void setActivityType(ActivityType activityType) {
-//         this.activityType = activityType;
-//     }
-// }
+    public ActivityLog() {}
+
+    public ActivityLog(Long id, ActivityType activityType,
+                       User user, Double quantity,
+                       LocalDate activityDate,
+                       LocalDateTime loggedAt,
+                       Double estimatedEmission) {
+        this.id = id;
+        this.activityType = activityType;
+        this.user = user;
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+        this.loggedAt = loggedAt;
+        this.estimatedEmission = estimatedEmission;
+    }
+
+    // Getters and Setters
+}
