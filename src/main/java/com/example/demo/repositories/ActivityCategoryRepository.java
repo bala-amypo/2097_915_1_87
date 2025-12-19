@@ -1,8 +1,9 @@
-// package com.example.demo.repository;
+package com.example.demo.repositories;
 
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import com.example.demo.entity.ActivityCategory;
+import com.example.demo.entity.ActivityCategory;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-// public interface ActivityCategoryRepository
-//         extends JpaRepository<ActivityCategory, Long> {
-// }
+public interface ActivityCategoryRepository
+        extends JpaRepository<ActivityCategory, Long> {
+    boolean existsByCategoryName(String categoryName);
+}
