@@ -1,40 +1,40 @@
-package com.example.demo.entity;
+// package com.example.demo.entity;
 
-import java.time.LocalDate;
-import jakarta.persistence.*;
+// import java.time.LocalDate;
+// import jakarta.persistence.*;
 
-@Entity
-public class ActivityLog {
+// @Entity
+// public class ActivityLog {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
 
-    private Double quantity;
-    private LocalDate activityDate;
+//     private Double quantity;
+//     private LocalDate activityDate;
 
-    @ManyToOne
-    private User user;
+//     @ManyToOne
+//     private User user;
 
-    @ManyToOne
-    private ActivityType activityType;
+//     @ManyToOne
+//     private ActivityType activityType;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+//     public Long getId() { return id; }
+//     public void setId(Long id) { this.id = id; }
 
-    public Double getQuantity() { return quantity; }
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
+//     public Double getQuantity() { return quantity; }
+//     public void setQuantity(Double quantity) { this.quantity = quantity; }
 
-    public LocalDate getActivityDate() { return activityDate; }
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
-    }
+//     public LocalDate getActivityDate() { return activityDate; }
+//     public void setActivityDate(LocalDate activityDate) {
+//         this.activityDate = activityDate;
+//     }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+//     public User getUser() { return user; }
+//     public void setUser(User user) { this.user = user; }
 
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
-}
+//     public ActivityType getActivityType() { return activityType; }
+//     public void setActivityType(ActivityType activityType) {
+//         this.activityType = activityType;
+//     }
+// }

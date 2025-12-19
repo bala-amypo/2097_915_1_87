@@ -1,33 +1,33 @@
-package com.example.demo.entity;
+// package com.example.demo.entity;
 
-import jakarta.persistence.*;
+// import jakarta.persistence.*;
 
-@Entity
-public class EmissionFactor {
+// @Entity
+// public class EmissionFactor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
 
-    private Double factorValue;
-    private String unit;
+//     private Double factorValue;
+//     private String unit;
 
-    @ManyToOne
-    private ActivityType activityType;
+//     @ManyToOne
+//     private ActivityType activityType;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+//     public Long getId() { return id; }
+//     public void setId(Long id) { this.id = id; }
 
-    public Double getFactorValue() { return factorValue; }
-    public void setFactorValue(Double factorValue) {
-        this.factorValue = factorValue;
-    }
+//     public Double getFactorValue() { return factorValue; }
+//     public void setFactorValue(Double factorValue) {
+//         this.factorValue = factorValue;
+//     }
 
-    public String getUnit() { return unit; }
-    public void setUnit(String unit) { this.unit = unit; }
+//     public String getUnit() { return unit; }
+//     public void setUnit(String unit) { this.unit = unit; }
 
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
-}
+//     public ActivityType getActivityType() { return activityType; }
+//     public void setActivityType(ActivityType activityType) {
+//         this.activityType = activityType;
+//     }
+// }

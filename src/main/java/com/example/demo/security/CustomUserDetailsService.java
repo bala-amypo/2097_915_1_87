@@ -1,35 +1,35 @@
-package com.example.demo.security;
+// package com.example.demo.security;
 
-import java.util.Collections;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.Service;
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
+// import java.util.Collections;
+// import org.springframework.security.core.userdetails.*;
+// import org.springframework.stereotype.Service;
+// import com.example.demo.entity.User;
+// import com.example.demo.repository.UserRepository;
 
-@Service
-public class CustomUserDetailsService
-        implements UserDetailsService {
+// @Service
+// public class CustomUserDetailsService
+//         implements UserDetailsService {
 
-    private final UserRepository repo;
+//     private final UserRepository repo;
 
-    public CustomUserDetailsService(UserRepository repo) {
-        this.repo = repo;
-    }
+//     public CustomUserDetailsService(UserRepository repo) {
+//         this.repo = repo;
+//     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
+//     @Override
+//     public UserDetails loadUserByUsername(String email)
+//             throws UsernameNotFoundException {
 
-        User user = repo.findByEmail(email)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+//         User user = repo.findByEmail(email)
+//                 .orElseThrow(() ->
+//                         new UsernameNotFoundException("User not found"));
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                Collections.singleton(
-                        new SimpleGrantedAuthority("ROLE_" + user.getRole()))
-        );
-    }
-}
+//         return new org.springframework.security.core.userdetails.User(
+//                 user.getEmail(),
+//                 user.getPassword(),
+//                 Collections.singleton(
+//                         new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+//         );
+//     }
+// }
 
