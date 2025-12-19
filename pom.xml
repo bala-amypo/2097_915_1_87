@@ -93,16 +93,17 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-
-            <!-- Spring Boot Plugin -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-        </plugins>
-    </build>
+   <build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>3.2.5</version>
+            <configuration>
+                <mainClass>com.example.demo.DemoApplication</mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 
 </project>
