@@ -1,39 +1,35 @@
-// package com.example.demo.service.impl;
+package com.example.demo.service.impl;
 
-// import java.util.List;
-// import org.springframework.stereotype.Service;
-// import com.example.demo.entity.ActivityCategory;
-// import com.example.demo.repository.ActivityCategoryRepository;
-// import com.example.demo.service.ActivityCategoryService;
+import com.example.demo.entity.ActivityCategory;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
+import com.example.demo.repository.ActivityCategoryRepository;
+import com.example.demo.service.ActivityCategoryService;
+import org.springframework.stereotype.Service;
 
-// @Service
-// public class ActivityCategoryServiceImpl
-//         implements ActivityCategoryService {
+import java.util.List;
 
-//     private final ActivityCategoryRepository repo;
+@Service
+public class ActivityCategoryServiceImpl implements ActivityCategoryService {
 
-//     public ActivityCategoryServiceImpl(ActivityCategoryRepository repo) {
-//         this.repo = repo;
-//     }
+    private final ActivityCategoryRepository repo;
 
-//     public ActivityCategory create(ActivityCategory c) {
-//         return repo.save(c);
-//     }
+    public ActivityCategoryServiceImpl(ActivityCategoryRepository repo) {
+        this.repo = repo;
+    }
 
-//     public ActivityCategory get(Long id) {
-//         return repo.findById(id).orElse(null);
-//     }
+    public ActivityCategory createCategory(ActivityCategory category) {
+        if (repo.existsByCategoryName(category.getCategoryName()))
+            throw new ValidationException("Category name must be unique");
+        return repo.save(category);
+    }
 
-//     public List<ActivityCategory> getAll() {
-//         return repo.findAll();
-//     }
+    public ActivityCategory getCategory(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    }
 
-//     public ActivityCategory update(Long id, ActivityCategory c) {
-//         c.setId(id);
-//         return repo.save(c);
-//     }
-
-//     public void delete(Long id) {
-//         repo.deleteById(id);
-//     }
-// }
+    public List<ActivityCategory> getAllCategories() {
+        return repo.findAll();
+    }
+}

@@ -1,38 +1,45 @@
-// package com.example.demo.service.impl;
+package com.example.demo.service.impl;
 
-// import java.util.List;
-// import org.springframework.stereotype.Service;
-// import com.example.demo.entity.ActivityType;
-// import com.example.demo.repository.ActivityTypeRepository;
-// import com.example.demo.service.ActivityTypeService;
+import com.example.demo.entity.ActivityCategory;
+import com.example.demo.entity.ActivityType;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
+import com.example.demo.repository.ActivityCategoryRepository;
+import com.example.demo.repository.ActivityTypeRepository;
+import com.example.demo.service.ActivityTypeService;
+import org.springframework.stereotype.Service;
 
-// @Service
-// public class ActivityTypeServiceImpl implements ActivityTypeService {
+import java.util.List;
 
-//     private final ActivityTypeRepository repo;
+@Service
+public class ActivityTypeServiceImpl implements ActivityTypeService {
 
-//     public ActivityTypeServiceImpl(ActivityTypeRepository repo) {
-//         this.repo = repo;
-//     }
+    private final ActivityTypeRepository typeRepo;
+    private final ActivityCategoryRepository categoryRepo;
 
-//     public ActivityType create(ActivityType t) {
-//         return repo.save(t);
-//     }
+    public ActivityTypeServiceImpl(ActivityTypeRepository typeRepo,
+                                   ActivityCategoryRepository categoryRepo) {
+        this.typeRepo = typeRepo;
+        this.categoryRepo = categoryRepo;
+    }
 
-//     public ActivityType get(Long id) {
-//         return repo.findById(id).orElse(null);
-//     }
+    public ActivityType createType(Long categoryId, ActivityType type) {
+        ActivityCategory category = categoryRepo.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-//     public List<ActivityType> getAll() {
-//         return repo.findAll();
-//     }
+        if (type.getUnit() == null || type.getUnit().isBlank())
+            throw new ValidationException("Unit must be provided");
 
-//     public ActivityType update(Long id, ActivityType t) {
-//         t.setId(id);
-//         return repo.save(t);
-//     }
+        type.setCategory(category);
+        return typeRepo.save(type);
+    }
 
-//     public void delete(Long id) {
-//         repo.deleteById(id);
-//     }
-// }
+    public ActivityType getType(Long id) {
+        return typeRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    }
+
+    public List<ActivityType> getTypesByCategory(Long categoryId) {
+        return typeRepo.findByCategory_Id(categoryId);
+    }
+}

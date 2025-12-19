@@ -1,12 +1,12 @@
-// package com.example.demo.service;
+package com.example.demo.service;
 
-// import java.util.List;
-// import com.example.demo.entity.ActivityLog;
+import com.example.demo.entity.ActivityLog;
+import java.time.LocalDate;
+import java.util.List;
 
-// public interface ActivityLogService {
-//     ActivityLog create(ActivityLog log);
-//     ActivityLog get(Long id);
-//     List<ActivityLog> getAll();
-//     ActivityLog update(Long id, ActivityLog log);
-//     void delete(Long id);
-// }
+public interface ActivityLogService {
+    ActivityLog logActivity(Long userId, Long typeId, ActivityLog log);
+    ActivityLog getLog(Long id);
+    List<ActivityLog> getLogsByUser(Long userId);
+    List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate start, LocalDate end);
+}
