@@ -1,43 +1,50 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import java.util.List;
-// import org.springframework.web.bind.annotation.*;
-// import com.example.demo.entity.ActivityLog;
-// import com.example.demo.service.ActivityLogService;
+import com.example.demo.dto.ActivityLogRequest;
+import com.example.demo.entity.ActivityLog;
+import com.example.demo.service.ActivityLogService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-// @RestController
-// @RequestMapping("/logs")
-// public class ActivityLogController {
+import java.time.LocalDate;
+import java.util.List;
 
-//     private final ActivityLogService service;
+@RestController
+@RequestMapping("/api/logs")
+@Tag(name = "Activity Logs")
+public class ActivityLogController {
 
-//     public ActivityLogController(ActivityLogService service) {
-//         this.service = service;
-//     }
+    private final ActivityLogService service;
 
-//     @PostMapping
-//     public ActivityLog create(@RequestBody ActivityLog log) {
-//         return service.create(log);
-//     }
+    public ActivityLogController(ActivityLogService service) {
+        this.service = service;
+    }
 
-//     @GetMapping("/{id}")
-//     public ActivityLog get(@PathVariable Long id) {
-//         return service.get(id);
-//     }
+    @PostMapping("/{userId}/{typeId}")
+    public ActivityLog log(@PathVariable Long userId,
+                           @PathVariable Long typeId,
+                           @RequestBody ActivityLogRequest req) {
 
-//     @GetMapping
-//     public List<ActivityLog> getAll() {
-//         return service.getAll();
-//     }
+        ActivityLog log = new ActivityLog();
+        log.setQuantity(req.getQuantity());
+        log.setActivityDate(req.getActivityDate());
+        return service.logActivity(userId, typeId, log);
+    }
 
-//     @PutMapping("/{id}")
-//     public ActivityLog update(@PathVariable Long id,
-//                               @RequestBody ActivityLog log) {
-//         return service.update(id, log);
-//     }
+    @GetMapping("/{id}")
+    public ActivityLog get(@PathVariable Long id) {
+        return service.getLog(id);
+    }
 
-//     @DeleteMapping("/{id}")
-//     public void delete(@PathVariable Long id) {
-//         service.delete(id);
-//     }
-// }
+    @GetMapping("/user/{userId}")
+    public List<ActivityLog> byUser(@PathVariable Long userId) {
+        return service.getLogsByUser(userId);
+    }
+
+    @GetMapping("/user/{userId}/range")
+    public List<ActivityLog> byDate(@PathVariable Long userId,
+                                    @RequestParam LocalDate start,
+                                    @RequestParam LocalDate end) {
+        return service.getLogsByUserAndDate(userId, start, end);
+    }
+}

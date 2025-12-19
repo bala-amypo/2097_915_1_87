@@ -1,43 +1,41 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import java.util.List;
-// import org.springframework.web.bind.annotation.*;
-// import com.example.demo.entity.EmissionFactor;
-// import com.example.demo.service.EmissionFactorService;
+import com.example.demo.entity.EmissionFactor;
+import com.example.demo.service.EmissionFactorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-// @RestController
-// @RequestMapping("/factors")
-// public class EmissionFactorController {
+import java.util.List;
 
-//     private final EmissionFactorService service;
+@RestController
+@RequestMapping("/api/factors")
+@Tag(name = "Emission Factors")
+public class EmissionFactorController {
 
-//     public EmissionFactorController(EmissionFactorService service) {
-//         this.service = service;
-//     }
+    private final EmissionFactorService service;
 
-//     @PostMapping
-//     public EmissionFactor create(@RequestBody EmissionFactor f) {
-//         return service.create(f);
-//     }
+    public EmissionFactorController(EmissionFactorService service) {
+        this.service = service;
+    }
 
-//     @GetMapping("/{id}")
-//     public EmissionFactor get(@PathVariable Long id) {
-//         return service.get(id);
-//     }
+    @PostMapping("/{activityTypeId}")
+    public EmissionFactor create(@PathVariable Long activityTypeId,
+                                 @RequestBody EmissionFactor factor) {
+        return service.createFactor(activityTypeId, factor);
+    }
 
-//     @GetMapping
-//     public List<EmissionFactor> getAll() {
-//         return service.getAll();
-//     }
+    @GetMapping("/{id}")
+    public EmissionFactor get(@PathVariable Long id) {
+        return service.getFactor(id);
+    }
 
-//     @PutMapping("/{id}")
-//     public EmissionFactor update(@PathVariable Long id,
-//                                  @RequestBody EmissionFactor f) {
-//         return service.update(id, f);
-//     }
+    @GetMapping("/type/{typeId}")
+    public EmissionFactor byType(@PathVariable Long typeId) {
+        return service.getFactorByType(typeId);
+    }
 
-//     @DeleteMapping("/{id}")
-//     public void delete(@PathVariable Long id) {
-//         service.delete(id);
-//     }
-// }
+    @GetMapping
+    public List<EmissionFactor> all() {
+        return service.getAllFactors();
+    }
+}

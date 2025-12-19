@@ -1,43 +1,36 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import java.util.List;
-// import org.springframework.web.bind.annotation.*;
-// import com.example.demo.entity.ActivityType;
-// import com.example.demo.service.ActivityTypeService;
+import com.example.demo.entity.ActivityType;
+import com.example.demo.service.ActivityTypeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-// @RestController
-// @RequestMapping("/types")
-// public class ActivityTypeController {
+import java.util.List;
 
-//     private final ActivityTypeService service;
+@RestController
+@RequestMapping("/api/types")
+@Tag(name = "Activity Types")
+public class ActivityTypeController {
 
-//     public ActivityTypeController(ActivityTypeService service) {
-//         this.service = service;
-//     }
+    private final ActivityTypeService service;
 
-//     @PostMapping
-//     public ActivityType create(@RequestBody ActivityType t) {
-//         return service.create(t);
-//     }
+    public ActivityTypeController(ActivityTypeService service) {
+        this.service = service;
+    }
 
-//     @GetMapping("/{id}")
-//     public ActivityType get(@PathVariable Long id) {
-//         return service.get(id);
-//     }
+    @PostMapping("/category/{categoryId}")
+    public ActivityType create(@PathVariable Long categoryId,
+                               @RequestBody ActivityType type) {
+        return service.createType(categoryId, type);
+    }
 
-//     @GetMapping
-//     public List<ActivityType> getAll() {
-//         return service.getAll();
-//     }
+    @GetMapping("/{id}")
+    public ActivityType get(@PathVariable Long id) {
+        return service.getType(id);
+    }
 
-//     @PutMapping("/{id}")
-//     public ActivityType update(@PathVariable Long id,
-//                                @RequestBody ActivityType t) {
-//         return service.update(id, t);
-//     }
-
-//     @DeleteMapping("/{id}")
-//     public void delete(@PathVariable Long id) {
-//         service.delete(id);
-//     }
-// }
+    @GetMapping("/category/{categoryId}")
+    public List<ActivityType> byCategory(@PathVariable Long categoryId) {
+        return service.getTypesByCategory(categoryId);
+    }
+}
