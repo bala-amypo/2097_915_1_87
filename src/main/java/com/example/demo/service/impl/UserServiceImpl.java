@@ -2,7 +2,6 @@ package com.example.demo.service.impl;
 
 import java.util.List;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
@@ -13,14 +12,11 @@ import com.example.demo.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repo;
-    private final PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository repo, PasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository repo) {
         this.repo = repo;
-        this.encoder = encoder;
     }
 
-    // ✅ REQUIRED METHOD (FIXES YOUR ERROR)
     @Override
     public User register(User user) {
 
@@ -28,7 +24,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Email already registered");
         }
 
-        user.setPassword(encoder.encode(user.getPassword()));
+        // Directly save the password as it is (plain text)
         user.setRole("ROLE_USER");
 
         return repo.save(user);
