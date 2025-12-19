@@ -1,9 +1,10 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
     @Id
@@ -11,22 +12,35 @@ public class User {
     private Long id;
 
     private String fullName;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
     private String password;
+
     private String role;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private LocalDateTime createdAt;
 
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
+        if (role == null) {
+            role = "USER";
+        }
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public User() {}
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public User(Long id, String fullName, String email,
+                String password, String role, LocalDateTime createdAt) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    // Getters and Setters
 }

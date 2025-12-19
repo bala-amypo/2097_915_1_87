@@ -1,23 +1,37 @@
-// package com.example.demo.entity;
+package com.example.demo.entity;
 
-// import jakarta.persistence.*;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-// @Entity
-// public class ActivityCategory {
+@Entity
+@Table(name = "activity_categories")
+public class ActivityCategory {
 
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-//     private String categoryName;
-//     private String description;
+    @Column(unique = true, nullable = false)
+    private String categoryName;
 
-//     public Long getId() { return id; }
-//     public void setId(Long id) { this.id = id; }
+    private String description;
 
-//     public String getCategoryName() { return categoryName; }
-//     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    private LocalDateTime createdAt;
 
-//     public String getDescription() { return description; }
-//     public void setDescription(String description) { this.description = description; }
-// }
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    public ActivityCategory() {}
+
+    public ActivityCategory(Long id, String categoryName,
+                            String description, LocalDateTime createdAt) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
+
+    // Getters and Setters
+}
