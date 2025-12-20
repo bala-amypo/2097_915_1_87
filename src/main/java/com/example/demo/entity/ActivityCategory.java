@@ -1,10 +1,10 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "activity_category")
+@Table(name = "activity_categories")
 public class ActivityCategory {
 
     @Id
@@ -13,38 +13,34 @@ public class ActivityCategory {
 
     private String categoryName;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<ActivityType> types;
+    private String description;
 
-    public ActivityCategory() {}
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    public ActivityCategory() { }
 
     public ActivityCategory(Long id, String categoryName) {
         this.id = id;
         this.categoryName = categoryName;
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public ActivityCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
         this.id = id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+        this.description = description;
+        this.createdAt = createdAt;
     }
 
-    public List<ActivityType> getTypes() {
-        return types;
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setTypes(List<ActivityType> types) {
-        this.types = types;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
+
+    // Getters and Setters
+    // ...
 }
