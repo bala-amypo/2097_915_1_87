@@ -5,8 +5,6 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -32,7 +30,6 @@ public class UserServiceImpl implements UserService {
                 .map(existing -> {
                     existing.setEmail(user.getEmail());
                     existing.setPassword(user.getPassword());
-                    existing.setRoles(user.getRoles());
                     return userRepository.save(existing);
                 })
                 .orElse(null);
