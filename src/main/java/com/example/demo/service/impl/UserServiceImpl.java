@@ -5,8 +5,9 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
-@Service // <- THIS MAKES SPRING CREATE A BEAN
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -26,5 +27,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    // Add other methods if needed
+    @Override
+    public Optional<User> getUser(Long id) {
+        return userRepository.findById(id); // Fix for getUser(long)
+    }
 }
