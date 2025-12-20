@@ -32,14 +32,4 @@ public class ActivityLog {
     public void prePersist() {
         loggedAt = LocalDateTime.now();
     }
-
-    public ActivityLog(Long id, ActivityType activityType, User user, double amount, LocalDate date, LocalDateTime loggedAt, double carbonEmission) {
-        this.id = id;
-        this.activityType = activityType;
-        this.user = user;
-        this.amount = amount;
-        this.date = date;
-        this.loggedAt = loggedAt;
-        this.carbonEmission = carbonEmission;
-    }
 }

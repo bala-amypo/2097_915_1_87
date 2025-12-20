@@ -27,12 +27,4 @@ public class EmissionFactor {
     public void prePersist() {
         createdAt = LocalDateTime.now();
     }
-
-    public EmissionFactor(Long id, ActivityType activityType, double value, String unit, LocalDateTime createdAt) {
-        this.id = id;
-        this.activityType = activityType;
-        this.value = value;
-        this.unit = unit;
-        this.createdAt = createdAt;
-    }
 }
