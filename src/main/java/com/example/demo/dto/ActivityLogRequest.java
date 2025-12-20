@@ -3,12 +3,17 @@ package com.example.demo.dto;
 import java.time.LocalDate;
 
 public class ActivityLogRequest {
-    private Double quantity;
-    private LocalDate activityDate;
 
-    public Double getQuantity() { return quantity; }
-    public LocalDate getActivityDate() { return activityDate; }
+    private double emission;
+    private LocalDate date;
 
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
+    public ActivityLogRequest() {
+    }
+
+    public ActivityLogRequest(double emission, LocalDate date) {
+        this.emission = emission;
+        this.date = date;
+    }
+
+    // getters and setters
 }
