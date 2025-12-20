@@ -16,6 +16,15 @@ public class ActivityCategory {
 
     public ActivityCategory() {}
 
+    // ✅ REQUIRED BY TESTS
+    public ActivityCategory(Long id, String categoryName,
+                            String description, LocalDateTime createdAt) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

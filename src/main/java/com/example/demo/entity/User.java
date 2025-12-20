@@ -15,17 +15,26 @@ public class User {
     private String password;
     private String role;
     private String status;
-
     private LocalDateTime createdAt;
 
     public User() {}
+
+    // ✅ REQUIRED BY TESTS
+    public User(Long id, String fullName, String email,
+                String password, String role, LocalDateTime createdAt) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ===== Getters =====
     public Long getId() { return id; }
     public String getFullName() { return fullName; }
     public String getEmail() { return email; }
@@ -34,7 +43,6 @@ public class User {
     public String getStatus() { return status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 
-    // ===== Setters =====
     public void setId(Long id) { this.id = id; }
     public void setFullName(String fullName) { this.fullName = fullName; }
     public void setEmail(String email) { this.email = email; }

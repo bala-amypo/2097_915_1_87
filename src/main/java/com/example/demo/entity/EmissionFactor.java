@@ -19,6 +19,17 @@ public class EmissionFactor {
 
     public EmissionFactor() {}
 
+    // ✅ REQUIRED BY TESTS
+    public EmissionFactor(Long id, ActivityType activityType,
+                          double factorValue, String unit,
+                          LocalDateTime createdAt) {
+        this.id = id;
+        this.activityType = activityType;
+        this.factorValue = factorValue;
+        this.unit = unit;
+        this.createdAt = createdAt;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
@@ -28,6 +39,7 @@ public class EmissionFactor {
     public ActivityType getActivityType() { return activityType; }
     public double getFactorValue() { return factorValue; }
     public String getUnit() { return unit; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
     public void setId(Long id) { this.id = id; }
     public void setActivityType(ActivityType activityType) { this.activityType = activityType; }

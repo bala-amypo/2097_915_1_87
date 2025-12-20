@@ -24,6 +24,19 @@ public class ActivityLog {
 
     public ActivityLog() {}
 
+    // ✅ REQUIRED BY TESTS
+    public ActivityLog(Long id, ActivityType activityType, User user,
+                       double quantity, LocalDate activityDate,
+                       LocalDateTime loggedAt, double estimatedEmission) {
+        this.id = id;
+        this.activityType = activityType;
+        this.user = user;
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+        this.loggedAt = loggedAt;
+        this.estimatedEmission = estimatedEmission;
+    }
+
     @PrePersist
     public void prePersist() {
         this.loggedAt = LocalDateTime.now();
