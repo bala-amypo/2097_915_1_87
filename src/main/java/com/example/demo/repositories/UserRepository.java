@@ -5,5 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email); // MUST exist for CustomUserDetailsService
+
+    // Find a user by email (used in authentication)
+    Optional<User> findByEmail(String email);
+
+    // Check if a user exists by email (used in UserServiceImpl.registerUser)
+    boolean existsByEmail(String email);
 }
