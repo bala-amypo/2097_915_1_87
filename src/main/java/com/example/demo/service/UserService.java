@@ -4,9 +4,9 @@ import com.example.demo.entity.User;
 
 public interface UserService {
 
-    User getUser(Long id);
+    User registerUser(User user);
 
-    User createUser(User user);
+    User getUser(Long id);
 
     User updateUser(Long id, User user);
 
