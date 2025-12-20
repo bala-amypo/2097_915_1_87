@@ -10,7 +10,6 @@ public class UserController {
 
     private final UserService userService;
 
-    // Spring will inject the UserServiceImpl bean here
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -19,5 +18,10 @@ public class UserController {
     public String register(@RequestBody User user) {
         userService.registerUser(user);
         return "User registered successfully!";
+    }
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.getUser(id);
     }
 }

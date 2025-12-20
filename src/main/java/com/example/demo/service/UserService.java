@@ -5,5 +5,5 @@ import java.util.Optional;
 
 public interface UserService {
     User registerUser(User user);
-    Optional<User> getUser(Long id);  // Fix for getUser(long) error in test
+    User getUser(Long id);
 }
