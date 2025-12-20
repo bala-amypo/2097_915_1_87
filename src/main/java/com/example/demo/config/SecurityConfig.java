@@ -1,4 +1,4 @@
-package com.example.carbonfootprint.config;
+package com.example.demo.config;
 
 import com.example.carbonfootprint.security.JwtAuthenticationEntryPoint;
 import org.springframework.context.annotation.*;

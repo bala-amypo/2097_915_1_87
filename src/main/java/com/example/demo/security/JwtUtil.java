@@ -1,4 +1,4 @@
-package com.example.carbonfootprint.security;
+package com.example.demo.security;
 
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;

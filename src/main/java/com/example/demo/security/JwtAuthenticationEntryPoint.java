@@ -1,4 +1,4 @@
-package com.example.carbonfootprint.security;
+package com.example.demo.security;
 
 import jakarta.servlet.http.*;
 import org.springframework.security.web.AuthenticationEntryPoint;
