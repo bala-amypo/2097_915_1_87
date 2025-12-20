@@ -1,50 +1,20 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ActivityLogRequest;
-import com.example.demo.entity.ActivityLog;
-import com.example.demo.service.ActivityLogService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/logs")
-@Tag(name = "Activity Logs")
+@RequestMapping("/api/activity")
 public class ActivityLogController {
 
-    private final ActivityLogService service;
+    @PostMapping
+    public ResponseEntity<String> logActivity(@RequestBody ActivityLogRequest req) {
 
-    public ActivityLogController(ActivityLogService service) {
-        this.service = service;
-    }
+        double quantity = req.getQuantity();
+        var date = req.getActivityDate();
 
-    @PostMapping("/{userId}/{typeId}")
-    public ActivityLog log(@PathVariable Long userId,
-                           @PathVariable Long typeId,
-                           @RequestBody ActivityLogRequest req) {
-
-        ActivityLog log = new ActivityLog();
-        log.setQuantity(req.getQuantity());
-        log.setActivityDate(req.getActivityDate());
-        return service.logActivity(userId, typeId, log);
-    }
-
-    @GetMapping("/{id}")
-    public ActivityLog get(@PathVariable Long id) {
-        return service.getLog(id);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<ActivityLog> byUser(@PathVariable Long userId) {
-        return service.getLogsByUser(userId);
-    }
-
-    @GetMapping("/user/{userId}/range")
-    public List<ActivityLog> byDate(@PathVariable Long userId,
-                                    @RequestParam LocalDate start,
-                                    @RequestParam LocalDate end) {
-        return service.getLogsByUserAndDate(userId, start, end);
+        // business logic placeholder
+        return ResponseEntity.ok("Activity logged: " + quantity + " on " + date);
     }
 }

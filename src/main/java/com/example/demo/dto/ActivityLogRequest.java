@@ -4,32 +4,30 @@ import java.time.LocalDate;
 
 public class ActivityLogRequest {
 
-    private double emission;
-    private LocalDate date;
+    private double quantity;
+    private LocalDate activityDate;
 
-    // REQUIRED no-args constructor
     public ActivityLogRequest() {
     }
 
-    // REQUIRED constructor used by tests
-    public ActivityLogRequest(double emission, LocalDate date) {
-        this.emission = emission;
-        this.date = date;
+    public ActivityLogRequest(double quantity, LocalDate activityDate) {
+        this.quantity = quantity;
+        this.activityDate = activityDate;
     }
 
-    public double getEmission() {
-        return emission;
+    public double getQuantity() {
+        return quantity;
     }
 
-    public void setEmission(double emission) {
-        this.emission = emission;
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getActivityDate() {
+        return activityDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
     }
 }
