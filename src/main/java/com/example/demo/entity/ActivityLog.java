@@ -1,58 +1,45 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ActivityLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double quantity;
-
-    private LocalDate activityDate;
-
-    private Double estimatedEmission;
+    @ManyToOne
+    private ActivityType activityType;
 
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private ActivityType activityType;
+    private double amount;
+    private LocalDate date;
+    private LocalDateTime loggedAt;
+    private double carbonEmission;
 
-    // ===== Getters & Setters =====
-
-    public Double getQuantity() {
-        return quantity;
+    @PrePersist
+    public void prePersist() {
+        loggedAt = LocalDateTime.now();
     }
 
-    public LocalDate getActivityDate() {
-        return activityDate;
-    }
-
-    public Double getEstimatedEmission() {
-        return estimatedEmission;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
-    }
-
-    public void setEstimatedEmission(Double estimatedEmission) {
-        this.estimatedEmission = estimatedEmission;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setActivityType(ActivityType activityType) {
+    public ActivityLog(Long id, ActivityType activityType, User user, double amount, LocalDate date, LocalDateTime loggedAt, double carbonEmission) {
+        this.id = id;
         this.activityType = activityType;
+        this.user = user;
+        this.amount = amount;
+        this.date = date;
+        this.loggedAt = loggedAt;
+        this.carbonEmission = carbonEmission;
     }
 }

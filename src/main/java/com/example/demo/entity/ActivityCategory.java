@@ -24,11 +24,4 @@ public class ActivityCategory {
     public void prePersist() {
         createdAt = LocalDateTime.now();
     }
-
-    public ActivityCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
-        this.id = id;
-        this.categoryName = categoryName;
-        this.description = description;
-        this.createdAt = createdAt;
-    }
 }

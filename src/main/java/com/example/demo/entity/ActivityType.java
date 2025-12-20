@@ -17,7 +17,7 @@ public class ActivityType {
     private Long id;
 
     private String typeName;
-    private String unit; // make sure field names match service usage
+    private String unit;
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -26,5 +26,13 @@ public class ActivityType {
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
+    }
+
+    public ActivityType(Long id, String typeName, String unit, LocalDateTime createdAt, ActivityCategory category) {
+        this.id = id;
+        this.typeName = typeName;
+        this.unit = unit;
+        this.createdAt = createdAt;
+        this.category = category;
     }
 }
