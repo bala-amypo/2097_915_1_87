@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,64 +11,62 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "secret123";
+    private final String SECRET_KEY = "your_secret_key_here"; // replace with your secret
 
-    // 1️⃣ extractUsername already exists
-    public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
-    }
-
-    // 2️⃣ token validity
-    public boolean isTokenValid(String token, String username) {
-        final String tokenUsername = extractUsername(token);
-        return tokenUsername.equals(username) && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
-        return extractAllClaims(token).getExpiration().before(new Date());
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    // 3️⃣ Generate token with extra claims
-    public String generateToken(Map<String, Object> claims, String subject) {
+    // Generate token for a user with custom claims
+    public String generateTokenForUser(com.example.demo.entity.User user) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(user.getEmail())
+                .claim("role", user.getRole())
+                .claim("userId", user.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
-    // 4️⃣ Generate token for user
-    public String generateTokenForUser(User user) {
-        return generateToken(Map.of("role", user.getRole(), "userId", user.getId()), user.getEmail());
+    // Generate token from custom claims
+    public String generateToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
     }
 
-    // 5️⃣ Extract role from token
+    // Validate token
+    public boolean isTokenValid(String token, String username) {
+        return extractUsername(token).equals(username) && !isTokenExpired(token);
+    }
+
+    // Extract username
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    // Extract role
     public String extractRole(String token) {
-        return extractAllClaims(token).get("role", String.class);
+        return extractClaims(token).get("role", String.class);
     }
 
-    // 6️⃣ Extract userId from token
-    public Long extractUserId(String token) {
-        return extractAllClaims(token).get("userId", Long.class);
+    // Extract userId
+    public Integer extractUserId(String token) {
+        return extractClaims(token).get("userId", Integer.class);
     }
 
-    // 7️⃣ Parse token to get Claims
-    public Claims parseToken(String token) {
-        return extractAllClaims(token);
+    // Parse token and get claims
+    public Claims extractClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    // 8️⃣ getPayload (if tests call it)
-    public Claims getPayload(String token) {
-        return extractAllClaims(token);
+    // Check if token expired
+    private boolean isTokenExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
     }
-
 }
