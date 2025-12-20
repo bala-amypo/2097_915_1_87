@@ -1,7 +1,7 @@
-package com.example.carbonfootprint.security;
+package com.example.demo.security;
 
-import com.example.carbonfootprint.entity.User;
-import com.example.carbonfootprint.repository.UserRepository;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
