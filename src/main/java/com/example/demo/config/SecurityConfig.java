@@ -27,30 +27,46 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
+            // Disable CSRF because we are using JWT
             .csrf(csrf -> csrf.disable())
+
+            // Handle unauthorized requests
             .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint))
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+            // Stateless session (JWT)
+            .sessionManagement(s ->
+                s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+
+            // Authorization rules
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/",
+                    "/",                    // root URL
                     "/index.html",
                     "/error",
-                    "/auth/**"
+                    "/auth/**",             // login / register
+                    "/swagger-ui/**",       // swagger UI
+                    "/v3/api-docs/**"       // swagger docs
                 ).permitAll()
                 .anyRequest().authenticated()
             );
 
+        // JWT filter
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
+    // Authentication manager
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    // Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
