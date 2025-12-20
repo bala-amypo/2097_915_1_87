@@ -7,10 +7,10 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class ActivityLog {
 
     @Id
@@ -26,10 +26,18 @@ public class ActivityLog {
     private double quantity;
     private LocalDate activityDate;
     private LocalDateTime loggedAt;
-    private double estimatedEmission; // renamed from carbonEmission
+    private double estimatedEmission;
 
     @PrePersist
     public void prePersist() {
-        loggedAt = LocalDateTime.now();
+        if (loggedAt == null) loggedAt = LocalDateTime.now();
+    }
+
+    public ActivityLog(ActivityType activityType, User user, double quantity, LocalDate activityDate) {
+        this.activityType = activityType;
+        this.user = user;
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+        this.loggedAt = LocalDateTime.now();
     }
 }

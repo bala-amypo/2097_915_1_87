@@ -25,6 +25,13 @@ public class ActivityType {
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now();
+        if (createdAt == null) createdAt = LocalDateTime.now();
+    }
+
+    public ActivityType(String typeName, String unit, ActivityCategory category) {
+        this.typeName = typeName;
+        this.unit = unit;
+        this.category = category;
+        this.createdAt = LocalDateTime.now();
     }
 }

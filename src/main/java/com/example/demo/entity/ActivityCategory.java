@@ -22,6 +22,13 @@ public class ActivityCategory {
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now();
+        if (createdAt == null) createdAt = LocalDateTime.now();
+    }
+
+    // Optional constructor for tests
+    public ActivityCategory(String categoryName, String description) {
+        this.categoryName = categoryName;
+        this.description = description;
+        this.createdAt = LocalDateTime.now();
     }
 }

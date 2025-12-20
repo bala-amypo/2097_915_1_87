@@ -1,38 +1,47 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.demo.entity.User;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "mysecretkey12345";
+    private final String secret = "secret";
+    private final long expiration = 1000 * 60 * 60; // 1 hour
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return getClaims(token).getSubject();
+    public String generateTokenForUser(User user) {
+        return generateToken(user.getEmail());
     }
 
-    private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-    }
-
-    public boolean validateToken(String token, String username) {
+    public boolean isTokenValid(String token, String username) {
         return extractUsername(token).equals(username) && !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String token) {
-        return getClaims(token).getExpiration().before(new Date());
+    public String extractUsername(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public boolean isTokenExpired(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getExpiration().before(new Date());
+    }
+
+    public String extractRole(String token) {
+        return (String) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("role");
+    }
+
+    public Long extractUserId(String token) {
+        return ((Integer) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("userId")).longValue();
     }
 }
