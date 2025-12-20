@@ -1,43 +1,37 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
-
-import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
+    private final String SECRET_KEY = "mysecretkey12345";
 
-    private static final String SECRET =
-            "carbonfootprintcarbonfootprintcarbonfootprint123";
-
-    private Key getKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
     }
 
     public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
+        return getClaims(token).getSubject();
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     public boolean validateToken(String token, String username) {
-        String extracted = extractUsername(token);
-        return extracted.equals(username) && !isTokenExpired(token);
+        return extractUsername(token).equals(username) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
-        return extractAllClaims(token)
-                .getExpiration()
-                .before(new Date());
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        return getClaims(token).getExpiration().before(new Date());
     }
 }
