@@ -1,44 +1,62 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "activity_type")
 public class ActivityType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String description;
-    private LocalDateTime createdAt;
+    private String typeName;
 
-    private String categoryName; // store name of category
+    private String unit;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private ActivityCategory category;
 
     public ActivityType() {}
 
-    public ActivityType(Long id, String name, String description, LocalDateTime createdAt, String categoryName) {
+    public ActivityType(Long id, String typeName, String unit, ActivityCategory category) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.createdAt = createdAt;
-        this.categoryName = categoryName;
+        this.typeName = typeName;
+        this.unit = unit;
+        this.category = category;
     }
 
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getTypeName() {
+        return typeName;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
-    public String getCategoryName() { return categoryName; }
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public ActivityCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ActivityCategory category) {
+        this.category = category;
+    }
 }

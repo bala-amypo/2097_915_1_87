@@ -3,27 +3,46 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.ActivityCategory;
 import com.example.demo.repository.ActivityCategoryRepository;
 import com.example.demo.service.ActivityCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityCategoryServiceImpl implements ActivityCategoryService {
 
-    private final ActivityCategoryRepository repository;
+    @Autowired
+    private ActivityCategoryRepository categoryRepository;
 
-    public ActivityCategoryServiceImpl(ActivityCategoryRepository repository) {
-        this.repository = repository;
+    @Override
+    public ActivityCategory createCategory(ActivityCategory category) {
+        return categoryRepository.save(category);
     }
 
     @Override
     public List<ActivityCategory> getAllCategories() {
-        return repository.findAll();
+        return categoryRepository.findAll();
     }
 
     @Override
-    public String getCategoryName(ActivityCategory category) {
-        // fixed: call getName() instead of getCategoryName()
-        return category.getName();
+    public ActivityCategory getCategoryById(Long id) {
+        Optional<ActivityCategory> optional = categoryRepository.findById(id);
+        return optional.orElse(null);
+    }
+
+    @Override
+    public ActivityCategory updateCategory(Long id, ActivityCategory categoryDetails) {
+        ActivityCategory category = getCategoryById(id);
+        if (category != null) {
+            category.setCategoryName(categoryDetails.getCategoryName());
+            return categoryRepository.save(category);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteCategory(Long id) {
+        categoryRepository.deleteById(id);
     }
 }
