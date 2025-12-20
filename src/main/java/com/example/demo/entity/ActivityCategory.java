@@ -16,12 +16,12 @@ public class ActivityCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String categoryName; // make sure field names match what service/test calls
     private String description;
     private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now(); // Fix prePersist() error
+        createdAt = LocalDateTime.now();
     }
 }

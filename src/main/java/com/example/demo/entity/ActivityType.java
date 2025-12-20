@@ -17,10 +17,14 @@ public class ActivityType {
     private Long id;
 
     private String typeName;
+    private String unit; // make sure field names match service usage
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    private ActivityCategory category;
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now(); // Fix prePersist() error
+        createdAt = LocalDateTime.now();
     }
 }
