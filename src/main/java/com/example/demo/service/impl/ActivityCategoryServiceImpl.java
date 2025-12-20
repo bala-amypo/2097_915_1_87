@@ -21,19 +21,19 @@ public class ActivityCategoryServiceImpl implements ActivityCategoryService {
     }
 
     @Override
-    public List<ActivityCategory> getAllCategories() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
-    public ActivityCategory getCategoryById(Long id) {
+    public ActivityCategory getCategory(Long id) {   // must match interface
         Optional<ActivityCategory> optional = categoryRepository.findById(id);
         return optional.orElse(null);
     }
 
     @Override
+    public List<ActivityCategory> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
     public ActivityCategory updateCategory(Long id, ActivityCategory categoryDetails) {
-        ActivityCategory category = getCategoryById(id);
+        ActivityCategory category = getCategory(id);  // uses getCategory
         if (category != null) {
             category.setCategoryName(categoryDetails.getCategoryName());
             return categoryRepository.save(category);

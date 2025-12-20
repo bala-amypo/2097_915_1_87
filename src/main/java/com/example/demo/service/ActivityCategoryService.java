@@ -7,7 +7,7 @@ public interface ActivityCategoryService {
 
     ActivityCategory createCategory(ActivityCategory category);
 
-    ActivityCategory getCategory(Long id);
+    ActivityCategory getCategory(Long id);   // Must match implementation
 
     List<ActivityCategory> getAllCategories();
 
