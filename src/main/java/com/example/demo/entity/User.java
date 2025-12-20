@@ -1,21 +1,54 @@
-// Example for User.java (Apply similar logic to others)
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor // This fixes "constructor cannot be applied to given types"
-@Builder // Optional, but helpful for tests
+@Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String email;
-    private String password;
-    private String role;
-    private LocalDateTime createdAt;
 
-    @PrePersist
-    public void prePersist() { // Fixes "cannot find symbol method prePersist"
-        this.createdAt = LocalDateTime.now();
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    private String role;
+
+    // ===== Getters & Setters =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+    
+    public void setRole(String role) {
+        this.role = role;
     }
 }
