@@ -1,38 +1,40 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.ActivityCategory;
 import com.example.demo.entity.ActivityType;
 import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.service.ActivityTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class ActivityTypeServiceImpl implements ActivityTypeService {
 
-    private final ActivityTypeRepository repository;
+    @Autowired
+    private ActivityTypeRepository typeRepository;
 
-    public ActivityTypeServiceImpl(ActivityTypeRepository repository) {
-        this.repository = repository;
+    @Override
+    public ActivityType saveType(ActivityType type) {
+        return typeRepository.save(type);
     }
 
     @Override
-    public List<ActivityType> getAllActivityTypes() {
-        return repository.findAll();
+    public List<ActivityType> getAllTypes() {
+        return typeRepository.findAll();
     }
 
     @Override
-    public void assignCategory(ActivityType type, ActivityCategory category) {
-        // fixed: we store categoryName string instead of full object
-        type.setCategoryName(category.getName());
-        repository.save(type);
+    public ActivityType getTypeById(Long id) {
+        return typeRepository.findById(id).orElse(null);
     }
 
     @Override
-    public String getUnit(ActivityType type) {
-        // If your ActivityType entity had a unit field, use it
-        // Otherwise, remove the call or add a field in the entity
-        return type.getUnit(); // Make sure ActivityType.java has: private String unit; + getter/setter
+    public void deleteType(Long id) {
+        typeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ActivityType> getTypesByCategory(Long categoryId) {
+        return typeRepository.findByCategoryName(categoryId.toString()); // if you use categoryName as String
     }
 }

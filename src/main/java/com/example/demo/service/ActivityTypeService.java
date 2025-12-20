@@ -4,7 +4,9 @@ import com.example.demo.entity.ActivityType;
 import java.util.List;
 
 public interface ActivityTypeService {
-    ActivityType createType(Long categoryId, ActivityType type);
-    ActivityType getType(Long id);
-    List<ActivityType> getTypesByCategory(Long categoryId);
+    ActivityType saveType(ActivityType type);
+    List<ActivityType> getAllTypes();
+    ActivityType getTypeById(Long id);
+    void deleteType(Long id);
+    List<ActivityType> getTypesByCategory(Long categoryId); // must match impl
 }
