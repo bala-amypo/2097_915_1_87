@@ -9,7 +9,6 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-
     private final String secret = "secret";
     private final long expiration = 1000 * 60 * 60; // 1 hour
 
@@ -27,6 +26,11 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token, String username) {
         return extractUsername(token).equals(username) && !isTokenExpired(token);
+    }
+
+    // Add this for JwtAuthenticationFilter
+    public boolean validateToken(String token, String username) {
+        return isTokenValid(token, username);
     }
 
     public String extractUsername(String token) {
