@@ -71,4 +71,8 @@ public class JwtUtil {
     public Claims getPayload(String token) {
         return extractAllClaims(token);
     }
+    public Claims getPayload(String token) {
+    return extractAllClaims(token); // returns Claims object
+}
+
 }
