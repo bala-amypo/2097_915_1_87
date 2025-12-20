@@ -1,18 +1,60 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
+import com.example.demo.entity.ActivityCategory;
 import com.example.demo.entity.ActivityType;
+import com.example.demo.repository.ActivityCategoryRepository;
+import com.example.demo.repository.ActivityTypeRepository;
+import com.example.demo.service.ActivityTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface ActivityTypeService {
+@Service
+public class ActivityTypeServiceImpl implements ActivityTypeService {
 
-    ActivityType createType(Long categoryId, ActivityType type);
+    @Autowired
+    private ActivityTypeRepository typeRepository;
 
-    List<ActivityType> getTypesByCategory(Long categoryId);
+    @Autowired
+    private ActivityCategoryRepository categoryRepository;
 
-    ActivityType getType(Long id);
+    @Override
+    public ActivityType createType(Long categoryId, ActivityType type) {
+        Optional<ActivityCategory> categoryOpt = categoryRepository.findById(categoryId);
+        if (categoryOpt.isPresent()) {
+            type.setCategory(categoryOpt.get());
+            return typeRepository.save(type);
+        }
+        return null;
+    }
 
-    ActivityType updateType(Long id, ActivityType type);
+    @Override
+    public List<ActivityType> getTypesByCategory(Long categoryId) {
+        return typeRepository.findByCategory_Id(categoryId);
+    }
 
-    void deleteType(Long id);
+    @Override
+    public ActivityType getType(Long id) {
+        Optional<ActivityType> type = typeRepository.findById(id);
+        return type.orElse(null);
+    }
+
+    @Override
+    public ActivityType updateType(Long id, ActivityType updatedType) {
+        Optional<ActivityType> typeOptional = typeRepository.findById(id);
+        if (typeOptional.isPresent()) {
+            ActivityType type = typeOptional.get();
+            type.setTypeName(updatedType.getTypeName());
+            type.setUnit(updatedType.getUnit());
+            return typeRepository.save(type);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteType(Long id) {
+        typeRepository.deleteById(id);
+    }
 }

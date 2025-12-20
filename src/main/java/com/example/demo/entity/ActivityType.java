@@ -1,10 +1,8 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "activity_types")
 public class ActivityType {
 
     @Id
@@ -19,10 +17,7 @@ public class ActivityType {
     @JoinColumn(name = "category_id")
     private ActivityCategory category;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    public ActivityType() { }
+    public ActivityType() {}
 
     public ActivityType(Long id, String typeName, String unit, ActivityCategory category) {
         this.id = id;
@@ -31,23 +26,16 @@ public class ActivityType {
         this.category = category;
     }
 
-    public ActivityType(Long id, String typeName, ActivityCategory category, String unit, LocalDateTime createdAt) {
-        this.id = id;
-        this.typeName = typeName;
-        this.category = category;
-        this.unit = unit;
-        this.createdAt = createdAt;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     // Getters and Setters
-    // ...
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getTypeName() { return typeName; }
+    public void setTypeName(String typeName) { this.typeName = typeName; }
+
+    public String getUnit() { return unit; }
+    public void setUnit(String unit) { this.unit = unit; }
+
+    public ActivityCategory getCategory() { return category; }
+    public void setCategory(ActivityCategory category) { this.category = category; }
 }
