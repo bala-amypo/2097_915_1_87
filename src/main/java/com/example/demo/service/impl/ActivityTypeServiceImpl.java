@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ActivityTypeServiceImpl implements ActivityTypeService {
@@ -22,12 +21,15 @@ public class ActivityTypeServiceImpl implements ActivityTypeService {
 
     @Override
     public ActivityType createType(Long categoryId, ActivityType type) {
-        Optional<ActivityCategory> categoryOpt = categoryRepository.findById(categoryId);
-        if (categoryOpt.isPresent()) {
-            type.setCategory(categoryOpt.get());
-            return typeRepository.save(type);
-        }
-        return null;
+        ActivityCategory category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        type.setCategory(category);
+        return typeRepository.save(type);
+    }
+
+    @Override
+    public ActivityType getType(Long id) {
+        return typeRepository.findById(id).orElseThrow(() -> new RuntimeException("Type not found"));
     }
 
     @Override
@@ -36,21 +38,12 @@ public class ActivityTypeServiceImpl implements ActivityTypeService {
     }
 
     @Override
-    public ActivityType getType(Long id) {
-        Optional<ActivityType> type = typeRepository.findById(id);
-        return type.orElse(null);
-    }
-
-    @Override
     public ActivityType updateType(Long id, ActivityType updatedType) {
-        Optional<ActivityType> typeOptional = typeRepository.findById(id);
-        if (typeOptional.isPresent()) {
-            ActivityType type = typeOptional.get();
-            type.setTypeName(updatedType.getTypeName());
-            type.setUnit(updatedType.getUnit());
-            return typeRepository.save(type);
-        }
-        return null;
+        ActivityType existing = getType(id);
+        existing.setTypeName(updatedType.getTypeName());
+        existing.setUnit(updatedType.getUnit());
+        existing.setCategory(updatedType.getCategory());
+        return typeRepository.save(existing);
     }
 
     @Override
