@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class EmissionFactor {
@@ -10,15 +9,18 @@ public class EmissionFactor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double factor;
-    private LocalDateTime createdAt;
+    private double factorValue;
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    @ManyToOne
+    private ActivityType activityType;
+
+    public EmissionFactor() {}
+
+    public double getFactorValue() {
+        return factorValue;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 }

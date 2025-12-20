@@ -13,7 +13,6 @@ public class ActivityCategory {
 
     private String categoryName;
     private String description;
-
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "category")
@@ -21,7 +20,6 @@ public class ActivityCategory {
 
     public ActivityCategory() {}
 
-    // REQUIRED BY TESTS
     public ActivityCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
         this.id = id;
         this.categoryName = categoryName;
@@ -38,4 +36,12 @@ public class ActivityCategory {
     public String getCategoryName() { return categoryName; }
     public String getDescription() { return description; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

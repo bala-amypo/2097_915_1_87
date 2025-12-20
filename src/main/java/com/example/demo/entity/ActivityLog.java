@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 public class ActivityLog {
@@ -11,10 +11,32 @@ public class ActivityLog {
     private Long id;
 
     private double quantity;
-    private LocalDateTime createdAt;
+    private LocalDate activityDate;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private ActivityType activityType;
+
+    public ActivityLog() {}
 
     @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public void prePersist() {}
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 }

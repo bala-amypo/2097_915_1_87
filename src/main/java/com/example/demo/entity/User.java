@@ -21,7 +21,6 @@ public class User {
 
     public User() {}
 
-    // REQUIRED BY TESTS
     public User(Long id, String fullName, String email, String password,
                 String role, String status, LocalDateTime createdAt) {
         this.id = id;
@@ -40,10 +39,14 @@ public class User {
 
     public Long getId() { return id; }
     public String getFullName() { return fullName; }
-    public String getName() { return fullName; } // TEST EXPECTS THIS
+    public String getName() { return fullName; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public String getRole() { return role; }
     public String getStatus() { return status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
