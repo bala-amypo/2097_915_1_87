@@ -2,33 +2,26 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity; // Add this import
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        userService.registerUser(user);
-        return "User registered successfully!";
+    public User registerUser(@RequestBody User user) {
+        return userService.registerUser(user);
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUser(id);
+    public ResponseEntity<String> getUserName(@PathVariable Long id) {
+        return userService.getUser(id)
+                .map(user -> ResponseEntity.ok(user.getFullName()))
+                .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/{id}")
-public ResponseEntity<String> getUserName(@PathVariable Long id) {
-    return userService.getUser(id)
-            .map(user -> ResponseEntity.ok(user.getFullName()))
-            .orElse(ResponseEntity.notFound().build());
-}
-
 }
