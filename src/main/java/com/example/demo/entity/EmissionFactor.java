@@ -19,7 +19,7 @@ public class EmissionFactor {
     @ManyToOne
     private ActivityType activityType;
 
-    private double value;
+    private double factorValue;  // renamed to match service calls
     private String unit;
     private LocalDateTime createdAt;
 

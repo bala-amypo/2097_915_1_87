@@ -23,8 +23,8 @@ public class ActivityLog {
     @ManyToOne
     private User user;
 
-    private double amount;
-    private LocalDate date;
+    private double quantity;           // renamed from amount
+    private LocalDate activityDate;    // renamed from date
     private LocalDateTime loggedAt;
     private double carbonEmission;
 
