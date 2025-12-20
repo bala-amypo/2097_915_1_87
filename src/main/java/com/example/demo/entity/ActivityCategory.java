@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class ActivityCategory {
@@ -15,17 +14,7 @@ public class ActivityCategory {
     private String description;
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "category")
-    private List<ActivityType> types;
-
     public ActivityCategory() {}
-
-    public ActivityCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
-        this.id = id;
-        this.categoryName = categoryName;
-        this.description = description;
-        this.createdAt = createdAt;
-    }
 
     @PrePersist
     public void prePersist() {
@@ -37,11 +26,7 @@ public class ActivityCategory {
     public String getDescription() { return description; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public void setDescription(String description) { this.description = description; }
 }

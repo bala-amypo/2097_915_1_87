@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class ActivityLog {
@@ -10,46 +11,37 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double quantity;
-
-    private double estimatedEmission;   // ✅ REQUIRED FIELD
-
-    private LocalDate activityDate;
+    @ManyToOne
+    private ActivityType activityType;
 
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private ActivityType activityType;
+    private double quantity;
+    private LocalDate activityDate;
+    private LocalDateTime loggedAt;
+    private double estimatedEmission;
 
     public ActivityLog() {}
 
-    @PrePersist
-    public void prePersist() {}
-
-    // ---------- GETTERS ----------
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public LocalDate getActivityDate() {
-        return activityDate;
-    }
-
-    public double getEstimatedEmission() {
-        return estimatedEmission;
-    }
-
-    // ---------- SETTERS ----------
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setActivityType(ActivityType activityType) {
+    public ActivityLog(Long id, ActivityType activityType, User user,
+                       double quantity, LocalDate activityDate,
+                       LocalDateTime loggedAt, double estimatedEmission) {
+        this.id = id;
         this.activityType = activityType;
-    }
-
-    public void setEstimatedEmission(double estimatedEmission) {
+        this.user = user;
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+        this.loggedAt = loggedAt;
         this.estimatedEmission = estimatedEmission;
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.loggedAt = LocalDateTime.now();
+    }
+
+    public User getUser() { return user; }
+    public ActivityType getActivityType() { return activityType; }
+    public LocalDateTime getLoggedAt() { return loggedAt; }
 }
