@@ -9,13 +9,13 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
+
     private final String secret = "secret";
-    private final long expiration = 1000 * 60 * 60; // 1 hour
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
@@ -28,13 +28,16 @@ public class JwtUtil {
         return extractUsername(token).equals(username) && !isTokenExpired(token);
     }
 
-    // Add this for JwtAuthenticationFilter
+    public String extractUsername(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
+
     public boolean validateToken(String token, String username) {
         return isTokenValid(token, username);
     }
 
-    public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    public Map<String, Object> parseToken(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     public boolean isTokenExpired(String token) {

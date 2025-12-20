@@ -7,12 +7,11 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class ActivityLog {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,13 +30,5 @@ public class ActivityLog {
     @PrePersist
     public void prePersist() {
         if (loggedAt == null) loggedAt = LocalDateTime.now();
-    }
-
-    public ActivityLog(ActivityType activityType, User user, double quantity, LocalDate activityDate) {
-        this.activityType = activityType;
-        this.user = user;
-        this.quantity = quantity;
-        this.activityDate = activityDate;
-        this.loggedAt = LocalDateTime.now();
     }
 }

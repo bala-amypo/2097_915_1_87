@@ -6,29 +6,22 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class ActivityCategory {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String categoryName;
     private String description;
     private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
-    }
-
-    // Optional constructor for tests
-    public ActivityCategory(String categoryName, String description) {
-        this.categoryName = categoryName;
-        this.description = description;
-        this.createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 }
