@@ -17,17 +17,20 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String fullName;  // Added field
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private Set<String> roles;
 
-    // Constructors
     public User() {}
 
-    public User(String email, String password, Set<String> roles) {
+    public User(String email, String password, String fullName, Set<String> roles) {
         this.email = email;
         this.password = password;
+        this.fullName = fullName;
         this.roles = roles;
     }
 
@@ -40,6 +43,9 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getFullName() { return fullName; } // Added getter
+    public void setFullName(String fullName) { this.fullName = fullName; } // Added setter
 
     public Set<String> getRoles() { return roles; }
     public void setRoles(Set<String> roles) { this.roles = roles; }
