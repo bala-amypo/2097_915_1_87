@@ -11,6 +11,9 @@ public class ActivityLog {
     private Long id;
 
     private double quantity;
+
+    private double estimatedEmission;   // ✅ REQUIRED FIELD
+
     private LocalDate activityDate;
 
     @ManyToOne
@@ -24,6 +27,7 @@ public class ActivityLog {
     @PrePersist
     public void prePersist() {}
 
+    // ---------- GETTERS ----------
     public double getQuantity() {
         return quantity;
     }
@@ -32,11 +36,20 @@ public class ActivityLog {
         return activityDate;
     }
 
+    public double getEstimatedEmission() {
+        return estimatedEmission;
+    }
+
+    // ---------- SETTERS ----------
     public void setUser(User user) {
         this.user = user;
     }
 
     public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
+    }
+
+    public void setEstimatedEmission(double estimatedEmission) {
+        this.estimatedEmission = estimatedEmission;
     }
 }
