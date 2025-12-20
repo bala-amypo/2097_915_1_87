@@ -4,44 +4,41 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "activity_types")
 public class ActivityType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String typeName;
-    private String unit;
-
+    private String name;
+    private String description;
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    private ActivityCategory category;
+    private String categoryName; // store name of category
 
     public ActivityType() {}
 
-    public ActivityType(Long id, String typeName, String unit, LocalDateTime createdAt, ActivityCategory category) {
+    public ActivityType(Long id, String name, String description, LocalDateTime createdAt, String categoryName) {
         this.id = id;
-        this.typeName = typeName;
-        this.unit = unit;
+        this.name = name;
+        this.description = description;
         this.createdAt = createdAt;
-        this.category = category;
+        this.categoryName = categoryName;
     }
 
-    // Getters and Setters
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getTypeName() { return typeName; }
-    public void setTypeName(String typeName) { this.typeName = typeName; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getUnit() { return unit; }
-    public void setUnit(String unit) { this.unit = unit; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public ActivityCategory getCategory() { return category; }
-    public void setCategory(ActivityCategory category) { this.category = category; }
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 }

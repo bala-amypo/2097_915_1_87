@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "emission_factors")
 public class EmissionFactor {
 
     @Id
@@ -16,7 +15,6 @@ public class EmissionFactor {
 
     private double factorValue;
     private String unit;
-
     private LocalDateTime createdAt;
 
     public EmissionFactor() {}
@@ -29,7 +27,7 @@ public class EmissionFactor {
         this.createdAt = createdAt;
     }
 
-    // Getters and Setters
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

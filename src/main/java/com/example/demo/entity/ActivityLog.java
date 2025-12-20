@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "activity_logs")
 public class ActivityLog {
 
     @Id
@@ -35,7 +34,7 @@ public class ActivityLog {
         this.estimatedEmission = estimatedEmission;
     }
 
-    // Getters and Setters
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
