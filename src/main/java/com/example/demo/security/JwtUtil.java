@@ -15,18 +15,26 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    // 24 hours validity
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
-
-    // Secure key for HS256
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     /* -------------------------------------------------
-       TOKEN GENERATION
+       TOKEN GENERATION (ALL VARIANTS REQUIRED BY TESTS)
      ------------------------------------------------- */
 
     public String generateToken(String username) {
         return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key)
+                .compact();
+    }
+
+    // REQUIRED BY TEST: generateToken(Map, String)
+    public String generateToken(Map<String, Object> claims, String username) {
+        return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -39,13 +47,7 @@ public class JwtUtil {
         claims.put("userId", user.getId());
         claims.put("role", user.getRole());
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(user.getEmail())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key)
-                .compact();
+        return generateToken(claims, user.getEmail());
     }
 
     /* -------------------------------------------------
@@ -61,7 +63,7 @@ public class JwtUtil {
     }
 
     /* -------------------------------------------------
-       CLAIM EXTRACTION
+       CLAIM ACCESS (TEST-COMPATIBLE)
      ------------------------------------------------- */
 
     public String extractUsername(String token) {
@@ -78,6 +80,11 @@ public class JwtUtil {
         return role == null ? null : role.toString();
     }
 
+    // TEST EXPECTS claims.getPayload()
+    public Claims getPayload(String token) {
+        return parseToken(token);
+    }
+
     /* -------------------------------------------------
        TOKEN VALIDATION
      ------------------------------------------------- */
@@ -85,11 +92,8 @@ public class JwtUtil {
     public boolean isTokenValid(String token, String username) {
         try {
             Claims claims = parseToken(token);
-            String tokenUsername = claims.getSubject();
-            Date expiration = claims.getExpiration();
-
-            return tokenUsername.equals(username)
-                    && expiration.after(new Date());
+            return claims.getSubject().equals(username)
+                    && claims.getExpiration().after(new Date());
         } catch (Exception e) {
             return false;
         }
