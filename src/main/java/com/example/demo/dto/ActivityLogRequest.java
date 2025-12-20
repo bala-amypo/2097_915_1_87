@@ -1,12 +1,14 @@
 package com.example.demo.dto;
 
-import lombok.*;
 import java.time.LocalDate;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ActivityLogRequest {
-    private double amount;
-    private LocalDate date;
+    private Double quantity;
+    private LocalDate activityDate;
+
+    public Double getQuantity() { return quantity; }
+    public LocalDate getActivityDate() { return activityDate; }
+
+    public void setQuantity(Double quantity) { this.quantity = quantity; }
+    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
 }
