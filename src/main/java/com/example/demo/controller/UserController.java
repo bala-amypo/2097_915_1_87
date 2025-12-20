@@ -2,29 +2,22 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "Users")
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
 
-    public UserController(UserService service) {
-        this.service = service;
+    // Spring will inject the UserServiceImpl bean here
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return service.getUser(id);
-    }
-
-    @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return service.getAllUsers();
+    @PostMapping("/register")
+    public String register(@RequestBody User user) {
+        userService.registerUser(user);
+        return "User registered successfully!";
     }
 }
