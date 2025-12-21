@@ -1,13 +1,12 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.ActivityLog;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.ActivityLog;
-
-public interface ActivityLogRepository
-        extends JpaRepository<ActivityLog, Long> {
+public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> {
 
     List<ActivityLog> findByUser_Id(Long userId);
 
