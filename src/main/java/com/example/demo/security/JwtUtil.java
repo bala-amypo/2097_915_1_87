@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -26,36 +25,74 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
+    /* =========================================================
+       TOKEN GENERATION
+       ========================================================= */
+
     public String generateTokenForUser(User user) {
+        return generateToken(
+                Map.of(
+                        "userId", user.getId(),
+                        "role", user.getRole(),
+                        "email", user.getEmail()
+                ),
+                user.getEmail()
+        );
+    }
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
-        claims.put("email", user.getEmail());
-        claims.put("role", user.getRole());
-
+    // REQUIRED BY TESTS
+    public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(user.getEmail())
+                .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // REQUIRED BY TESTS
-    public Claims parseToken(String token) {
-        return Jwts.parserBuilder()
+    /* =========================================================
+       TOKEN PARSING  (TEST-COMPATIBLE)
+       ========================================================= */
+
+    // IMPORTANT: Return custom wrapper
+    public JwtParseResult parseToken(String token) {
+        Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+        return new JwtParseResult(claims);
     }
+
+    /* =========================================================
+       CLAIM EXTRACTION
+       ========================================================= */
 
     public String extractUsername(String token) {
-        return parseToken(token).getSubject();
+        return parseToken(token).getPayload().getSubject();
     }
 
-    // Used by tests
+    // REQUIRED BY TESTS
+    public String extractRole(String token) {
+        Object role = parseToken(token).getPayload().get("role");
+        return role != null ? role.toString() : null;
+    }
+
+    // REQUIRED BY TESTS
+    public Long extractUserId(String token) {
+        Object userId = parseToken(token).getPayload().get("userId");
+        if (userId instanceof Integer) {
+            return ((Integer) userId).longValue();
+        }
+        return userId != null ? (Long) userId : null;
+    }
+
+    /* =========================================================
+       TOKEN VALIDATION
+       ========================================================= */
+
     public boolean isTokenValid(String token) {
         try {
             parseToken(token);
@@ -65,12 +102,11 @@ public class JwtUtil {
         }
     }
 
-    // ✅ Used by JwtAuthenticationFilter
     public boolean isTokenValid(String token, String username) {
         try {
-            String extractedUsername = extractUsername(token);
-            return extractedUsername.equals(username)
-                    && !parseToken(token).getExpiration().before(new Date());
+            Claims claims = parseToken(token).getPayload();
+            return claims.getSubject().equals(username)
+                    && claims.getExpiration().after(new Date());
         } catch (Exception ex) {
             return false;
         }
