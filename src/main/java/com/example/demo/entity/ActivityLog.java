@@ -25,12 +25,45 @@ public class ActivityLog {
 
     public ActivityLog() {}
 
+    // ✅ REQUIRED FULL CONSTRUCTOR (TESTS USE THIS)
+    public ActivityLog(Long id,
+                       ActivityType activityType,
+                       User user,
+                       Double quantity,
+                       LocalDate activityDate,
+                       LocalDateTime loggedAt,
+                       Double estimatedEmission) {
+        this.id = id;
+        this.activityType = activityType;
+        this.user = user;
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+        this.loggedAt = loggedAt;
+        this.estimatedEmission = estimatedEmission;
+    }
+
     @PrePersist
     public void prePersist() {
         this.loggedAt = LocalDateTime.now();
     }
 
-    // ===== REQUIRED SETTERS =====
+    // ✅ REQUIRED BY TESTS
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public Double getEstimatedEmission() {
+        return estimatedEmission;
+    }
+
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
@@ -49,14 +82,5 @@ public class ActivityLog {
 
     public void setEstimatedEmission(Double estimatedEmission) {
         this.estimatedEmission = estimatedEmission;
-    }
-
-    // ===== REQUIRED GETTERS =====
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public LocalDate getActivityDate() {
-        return activityDate;
     }
 }

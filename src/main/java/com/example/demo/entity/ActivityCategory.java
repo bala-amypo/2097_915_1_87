@@ -19,8 +19,7 @@ public class ActivityCategory {
 
     public ActivityCategory() {}
 
-    public ActivityCategory(Long id, String categoryName,
-                            String description, LocalDateTime createdAt) {
+    public ActivityCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
         this.id = id;
         this.categoryName = categoryName;
         this.description = description;
@@ -32,10 +31,20 @@ public class ActivityCategory {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public String getCategoryName() { return categoryName; }
-    public String getDescription() { return description; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    // ✅ REQUIRED BY TESTS
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 }

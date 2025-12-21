@@ -1,12 +1,10 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class JwtUtil {
@@ -18,23 +16,18 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    // ================= TOKEN GENERATION =================
-    public String generateTokenForUser(User user) {
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
-        claims.put("role", user.getRole());
-
+    // ✅ TESTS CALL THIS
+    public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(user.getEmail())
+                .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // ================= TOKEN PARSING (TESTS REQUIRE THIS) =================
+    // ✅ TESTS CALL parseToken().getPayload()
     public Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
@@ -42,15 +35,15 @@ public class JwtUtil {
                 .parseClaimsJws(token);
     }
 
-    public String extractUsername(String token) {
-        return parseToken(token).getBody().getSubject();
+    public String extractRole(String token) {
+        return parseToken(token).getPayload().get("role", String.class);
     }
 
-    public boolean isTokenValid(String token, String username) {
-        try {
-            return extractUsername(token).equals(username);
-        } catch (Exception e) {
-            return false;
-        }
+    public Long extractUserId(String token) {
+        return parseToken(token).getPayload().get("userId", Long.class);
+    }
+
+    public String extractUsername(String token) {
+        return parseToken(token).getPayload().getSubject();
     }
 }

@@ -35,8 +35,28 @@ public class EmissionFactor {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Double getFactorValue() { return factorValue; }
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
+    // ✅ REQUIRED BY TESTS
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setFactorValue(Double factorValue) {
+        this.factorValue = factorValue;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

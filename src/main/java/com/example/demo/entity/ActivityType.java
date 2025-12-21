@@ -13,10 +13,11 @@ public class ActivityType {
 
     private String typeName;
 
+    private String unit;
+
     @ManyToOne
     private ActivityCategory category;
 
-    private String unit;
     private LocalDateTime createdAt;
 
     public ActivityType() {}
@@ -35,9 +36,32 @@ public class ActivityType {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public ActivityCategory getCategory() { return category; }
-    public String getUnit() { return unit; }
+    // ✅ REQUIRED BY TESTS
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setCategory(ActivityCategory category) { this.category = category; }
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public ActivityCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ActivityCategory category) {
+        this.category = category;
+    }
 }
