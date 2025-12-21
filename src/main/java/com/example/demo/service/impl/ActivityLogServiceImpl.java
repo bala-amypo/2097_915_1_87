@@ -1,33 +1,34 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityLog;
-import com.example.demo.entity.ActivityType;
-import com.example.demo.entity.EmissionFactor;
 import com.example.demo.repository.ActivityLogRepository;
-import com.example.demo.repository.EmissionFactorRepository;
+import com.example.demo.service.ActivityLogService;
 import org.springframework.stereotype.Service;
 
-@Service
-public class ActivityLogServiceImpl {
+import java.util.List;
 
-    private final ActivityLogRepository logRepo;
-    private final EmissionFactorRepository factorRepo;
+@Service   // 🔴 THIS IS CRITICAL
+public class ActivityLogServiceImpl implements ActivityLogService {
 
-    public ActivityLogServiceImpl(ActivityLogRepository logRepo,
-                                  EmissionFactorRepository factorRepo) {
-        this.logRepo = logRepo;
-        this.factorRepo = factorRepo;
+    private final ActivityLogRepository repository;
+
+    public ActivityLogServiceImpl(ActivityLogRepository repository) {
+        this.repository = repository;
     }
 
+    @Override
     public ActivityLog save(ActivityLog log) {
+        return repository.save(log);
+    }
 
-        ActivityType type = log.getActivityType();
+    @Override
+    public List<ActivityLog> getAll() {
+        return repository.findAll();
+    }
 
-        EmissionFactor factor = factorRepo.findByActivityType(type);
-
-        double emission = log.getQuantity() * factor.getFactorValue();
-        log.setEstimatedEmission(emission);
-
-        return logRepo.save(log);
+    @Override
+    public ActivityLog getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ActivityLog not found"));
     }
 }

@@ -9,14 +9,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/logs")
+@RequestMapping("/api/activity-logs")
 public class ActivityLogController {
 
-    private final ActivityLogService logService;
+    private final ActivityLogService activityLogService;
 
-    public ActivityLogController(ActivityLogService logService) {
-        this.logService = logService;
+    public ActivityLogController(ActivityLogService activityLogService) {
+        this.activityLogService = activityLogService;
     }
+}
+
 
     @PostMapping("/{userId}/{typeId}")
     public ActivityLog log(@PathVariable Long userId,
