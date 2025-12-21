@@ -37,7 +37,13 @@ public class ActivityCategoryServiceImpl implements ActivityCategoryService {
 
     @Override
     public String getCategoryNameById(Long id) {
-        Optional<ActivityCategory> category = categoryRepository.findById(id);
-        return category.map(ActivityCategory::getCategoryName).orElse(null);
+        return categoryRepository.findById(id)
+                .map(ActivityCategory::getCategoryName)
+                .orElse(null);
+    }
+
+    @Override
+    public Optional<ActivityCategory> getCategory(Long id) {
+        return categoryRepository.findById(id);
     }
 }
