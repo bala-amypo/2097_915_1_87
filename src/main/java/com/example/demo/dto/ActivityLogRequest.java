@@ -6,6 +6,13 @@ public class ActivityLogRequest {
     private Double quantity;
     private LocalDate activityDate;
 
+    public ActivityLogRequest() {}
+
+    public ActivityLogRequest(Double quantity, LocalDate activityDate) {
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+    }
+
     // Getters and Setters
     public Double getQuantity() { return quantity; }
     public void setQuantity(Double quantity) { this.quantity = quantity; }
