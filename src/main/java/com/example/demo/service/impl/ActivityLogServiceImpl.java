@@ -6,9 +6,9 @@ import com.example.demo.service.ActivityLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class ActivityLogServiceImpl implements ActivityLogService {
@@ -22,8 +22,8 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     }
 
     @Override
-    public List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate startDate, LocalDate endDate) {
-        return logRepository.findByUser_IdAndLogDateBetween(userId, startDate, endDate);
+    public Optional<ActivityLog> getById(Long id) {
+        return logRepository.findById(id);
     }
 
     @Override
@@ -32,12 +32,7 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     }
 
     @Override
-    public Optional<ActivityLog> getLogById(Long id) {
-        return logRepository.findById(id);
-    }
-
-    @Override
-    public void deleteLog(Long id) {
-        logRepository.deleteById(id);
+    public List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate start, LocalDate end) {
+        return logRepository.findByUser_IdAndLogDateBetween(userId, start, end);
     }
 }

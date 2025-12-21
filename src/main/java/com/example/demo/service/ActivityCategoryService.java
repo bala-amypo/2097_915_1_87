@@ -5,16 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ActivityCategoryService {
-
-    ActivityCategory addCategory(ActivityCategory category);
-
+    ActivityCategory addCategory(ActivityCategory category); // Use addCategory instead of createCategory
     List<ActivityCategory> getAllCategories();
-
-    Optional<ActivityCategory> getCategoryById(Long id);
-
-    void deleteCategory(Long id);
-
-    String getCategoryNameById(Long id);
-
     Optional<ActivityCategory> getCategory(Long id);
+    void deleteCategory(Long id);
 }
