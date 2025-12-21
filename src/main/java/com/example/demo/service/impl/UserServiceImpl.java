@@ -6,9 +6,11 @@ import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -22,7 +24,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user) {
-
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ValidationException("Email already in use");
         }
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         if (user.getRole() == null) {
             user.setRole("USER");
         }
@@ -56,9 +56,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
+
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
-
 }
