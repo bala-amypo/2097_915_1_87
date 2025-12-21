@@ -1,16 +1,16 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.EmissionFactor;
 
 import java.util.List;
 
-public interface UserService {
+public interface EmissionFactorService {
 
-    User registerUser(User user);
+    EmissionFactor createFactor(Long activityTypeId, EmissionFactor factor);
 
-    User getUser(Long id);
+    EmissionFactor getFactor(Long id);
 
-    List<User> getAllUsers();
+    EmissionFactor getFactorByType(Long typeId);
 
-    User getByEmail(String email);
+    List<EmissionFactor> getAllFactors();
 }
