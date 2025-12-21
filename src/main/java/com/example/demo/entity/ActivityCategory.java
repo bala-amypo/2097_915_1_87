@@ -1,42 +1,48 @@
-package com.example.demo.entity;
+package com.example.carbonfootprint.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
+@Table(name = "activity_categories")
 public class ActivityCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String categoryName;
+
     private String description;
+
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<ActivityType> activityTypes;
 
     public ActivityCategory() {}
 
-    public ActivityCategory(String name) {
-        this.name = name;
-    }
-
-    public ActivityCategory(Long id, String name, String description, LocalDateTime createdAt) {
-        this.id = id;
-        this.name = name;
+    public ActivityCategory(String categoryName, String description) {
+        this.categoryName = categoryName;
         this.description = description;
-        this.createdAt = createdAt;
-    }
-
-    @PrePersist
-    public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // getters and setters
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Set<ActivityType> getActivityTypes() { return activityTypes; }
+    public void setActivityTypes(Set<ActivityType> activityTypes) { this.activityTypes = activityTypes; }
 }
