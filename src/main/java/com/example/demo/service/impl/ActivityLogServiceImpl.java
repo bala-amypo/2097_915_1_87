@@ -2,33 +2,27 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityLog;
 import com.example.demo.repository.ActivityLogRepository;
-import com.example.demo.service.ActivityLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-@Service   // 🔴 THIS IS CRITICAL
-public class ActivityLogServiceImpl implements ActivityLogService {
+@Service
+public class ActivityLogServiceImpl {
 
-    private final ActivityLogRepository repository;
+    @Autowired
+    private ActivityLogRepository logRepository;
 
-    public ActivityLogServiceImpl(ActivityLogRepository repository) {
-        this.repository = repository;
+    public ActivityLog logActivity(long userId, long activityTypeId, ActivityLog log) {
+        return logRepository.save(log);
     }
 
-    @Override
-    public ActivityLog save(ActivityLog log) {
-        return repository.save(log);
+    public List<ActivityLog> getLogsByUser(long userId) {
+        return logRepository.findByUser_Id(userId);
     }
 
-    @Override
-    public List<ActivityLog> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public ActivityLog getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ActivityLog not found"));
+    public List<ActivityLog> getLogsByUserAndDate(long userId, LocalDate from, LocalDate to) {
+        return logRepository.findByUser_IdAndLogDateBetween(userId, from, to);
     }
 }

@@ -10,40 +10,40 @@ public class EmissionFactor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String activityType;
-    private Double factorValue;
+    @ManyToOne
+    private ActivityType activityType;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private double factor;
+    private String unit;
+    private LocalDateTime createdAt;
 
-    /* ================= REQUIRED BY TEST ================= */
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public EmissionFactor() {
     }
 
-    /* ================= STANDARD GETTERS / SETTERS ================= */
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getActivityType() {
-        return activityType;
-    }
-
-    public Double getFactorValue() {
-        return factorValue;
-    }
-
-    public void setId(Long id) {
+    public EmissionFactor(Long id, ActivityType activityType, double factor, String unit, LocalDateTime createdAt) {
         this.id = id;
-    }
-
-    public void setActivityType(String activityType) {
         this.activityType = activityType;
+        this.factor = factor;
+        this.unit = unit;
+        this.createdAt = createdAt;
     }
 
-    public void setFactorValue(Double factorValue) {
-        this.factorValue = factorValue;
+    // Getters and setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public ActivityType getActivityType() { return activityType; }
+    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+    public double getFactor() { return factor; }
+    public void setFactor(double factor) { this.factor = factor; }
+    public String getUnit() { return unit; }
+    public void setUnit(String unit) { this.unit = unit; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 }
