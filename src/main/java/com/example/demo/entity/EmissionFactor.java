@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "emission_factors")
 public class EmissionFactor {
 
     @Id
@@ -11,17 +12,24 @@ public class EmissionFactor {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "activity_type_id")
     private ActivityType activityType;
 
-    private double factorValue;
+    private Double factorValue;
+
     private String unit;
+
     private LocalDateTime createdAt;
 
-    public EmissionFactor() {}
+    // No-arg constructor
+    public EmissionFactor() {
+    }
 
-    // ✅ REQUIRED BY TESTS
-    public EmissionFactor(Long id, ActivityType activityType,
-                          double factorValue, String unit,
+    // Constructor REQUIRED by tests
+    public EmissionFactor(Long id,
+                          ActivityType activityType,
+                          Double factorValue,
+                          String unit,
                           LocalDateTime createdAt) {
         this.id = id;
         this.activityType = activityType;
@@ -31,18 +39,45 @@ public class EmissionFactor {
     }
 
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public ActivityType getActivityType() { return activityType; }
-    public double getFactorValue() { return factorValue; }
-    public String getUnit() { return unit; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    // Getters & Setters
 
-    public void setId(Long id) { this.id = id; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-    public void setFactorValue(double factorValue) { this.factorValue = factorValue; }
-    public void setUnit(String unit) { this.unit = unit; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public Double getFactorValue() {
+        return factorValue;
+    }
+
+    public void setFactorValue(Double factorValue) {
+        this.factorValue = factorValue;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
