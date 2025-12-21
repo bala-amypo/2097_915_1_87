@@ -1,32 +1,37 @@
-package com.example.demo.controller;
+package com.example.carbonfootprint.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.carbonfootprint.entity.User;
+import com.example.carbonfootprint.security.JwtUtil;
+import com.example.carbonfootprint.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    public AuthController(UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        User created = userService.createUser(user);
+        String token = jwtUtil.generateTokenForUser(created);
+        return ResponseEntity.ok(token);
+    }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        // validate user credentials
-        User existingUser = userService.getByEmail(user.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!existingUser.getPassword().equals(user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        var existingUser = userService.getUserByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
+            String token = jwtUtil.generateTokenForUser(existingUser.get());
+            return ResponseEntity.ok(token);
         }
-
-        // generate JWT
-        return jwtUtil.generateToken(existingUser);
+        return ResponseEntity.status(401).body("Invalid credentials");
     }
 }
