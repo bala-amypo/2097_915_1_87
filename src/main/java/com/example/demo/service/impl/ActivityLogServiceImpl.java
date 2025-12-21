@@ -5,67 +5,65 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.*;
 import com.example.demo.service.ActivityLogService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class ActivityLogServiceImpl implements ActivityLogService {
 
-    private final ActivityLogRepository logRepository;
-    private final UserRepository userRepository;
-    private final ActivityTypeRepository typeRepository;
-    private final EmissionFactorRepository factorRepository;
+    private final ActivityLogRepository logRepo;
+    private final UserRepository userRepo;
+    private final ActivityTypeRepository typeRepo;
+    private final EmissionFactorRepository factorRepo;
 
-    public ActivityLogServiceImpl(ActivityLogRepository logRepository,
-                                  UserRepository userRepository,
-                                  ActivityTypeRepository typeRepository,
-                                  EmissionFactorRepository factorRepository) {
-        this.logRepository = logRepository;
-        this.userRepository = userRepository;
-        this.typeRepository = typeRepository;
-        this.factorRepository = factorRepository;
+    public ActivityLogServiceImpl(ActivityLogRepository logRepo,
+                                  UserRepository userRepo,
+                                  ActivityTypeRepository typeRepo,
+                                  EmissionFactorRepository factorRepo) {
+        this.logRepo = logRepo;
+        this.userRepo = userRepo;
+        this.typeRepo = typeRepo;
+        this.factorRepo = factorRepo;
     }
 
     @Override
     public ActivityLog logActivity(Long userId, Long typeId, ActivityLog log) {
 
-        User user = userRepository.findById(userId)
+        User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        ActivityType type = typeRepository.findById(typeId)
+        ActivityType type = typeRepo.findById(typeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-
-        if (log.getQuantity() == null || log.getQuantity() <= 0) {
-            throw new ValidationException("Quantity must be greater than zero");
-        }
 
         if (log.getActivityDate().isAfter(LocalDate.now())) {
             throw new ValidationException("cannot be in the future");
         }
 
-        EmissionFactor factor = factorRepository.findByActivityType_Id(typeId)
+        EmissionFactor factor = factorRepo.findByActivityType_Id(typeId)
                 .orElseThrow(() -> new ValidationException("No emission factor configured"));
 
         log.setUser(user);
         log.setActivityType(type);
         log.setEstimatedEmission(log.getQuantity() * factor.getFactorValue());
 
-        return logRepository.save(log);
+        return logRepo.save(log);
     }
 
     @Override
     public List<ActivityLog> getLogsByUser(Long userId) {
-        return logRepository.findByUser_Id(userId);
+        return logRepo.findByUser_Id(userId);
     }
 
     @Override
     public List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate start, LocalDate end) {
-        return logRepository.findByUser_IdAndActivityDateBetween(userId, start, end);
+        return logRepo.findByUser_IdAndActivityDateBetween(userId, start, end);
     }
 
     @Override
     public ActivityLog getLog(Long id) {
-        return logRepository.findById(id)
+        return logRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Log not found"));
     }
 }
