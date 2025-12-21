@@ -41,6 +41,11 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
     }
 
+    // Added method to satisfy test requirements
+    public Claims parseToken(String token) {
+        return extractAllClaims(token);
+    }
+
     public String generateTokenForUser(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
