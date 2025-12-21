@@ -1,10 +1,10 @@
-package com.example.demo.repository;
+package com.example.carbonfootprint.repository;
 
-import com.example.demo.entity.ActivityCategory;
+import com.example.carbonfootprint.entity.ActivityCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-@Repository
 public interface ActivityCategoryRepository extends JpaRepository<ActivityCategory, Long> {
-    // You can add custom query methods if needed
+    boolean existsByCategoryName(String categoryName);
+    Optional<ActivityCategory> findByCategoryName(String categoryName);
 }

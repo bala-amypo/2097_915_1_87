@@ -1,9 +1,10 @@
-package com.example.demo.repository;
+package com.example.carbonfootprint.repository;
 
-import com.example.demo.entity.EmissionFactor;
+import com.example.carbonfootprint.entity.EmissionFactor;
+import com.example.carbonfootprint.entity.ActivityType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import java.util.Optional;
 
 public interface EmissionFactorRepository extends JpaRepository<EmissionFactor, Long> {
-    List<EmissionFactor> findByActivityType_Id(Long activityTypeId);
+    Optional<EmissionFactor> findByActivityType(ActivityType activityType);
 }
