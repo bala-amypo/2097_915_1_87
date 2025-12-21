@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "activity_logs")
 public class ActivityLog {
 
     @Id
@@ -12,22 +13,33 @@ public class ActivityLog {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "activity_type_id")
     private ActivityType activityType;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    private double quantity;
+    private Double quantity;
+
     private LocalDate activityDate;
+
     private LocalDateTime loggedAt;
-    private double estimatedEmission;
 
-    public ActivityLog() {}
+    private Double estimatedEmission;
 
-    // ✅ REQUIRED BY TESTS
-    public ActivityLog(Long id, ActivityType activityType, User user,
-                       double quantity, LocalDate activityDate,
-                       LocalDateTime loggedAt, double estimatedEmission) {
+    // No-arg constructor
+    public ActivityLog() {
+    }
+
+    // Constructor REQUIRED by tests
+    public ActivityLog(Long id,
+                       ActivityType activityType,
+                       User user,
+                       Double quantity,
+                       LocalDate activityDate,
+                       LocalDateTime loggedAt,
+                       Double estimatedEmission) {
         this.id = id;
         this.activityType = activityType;
         this.user = user;
@@ -38,24 +50,61 @@ public class ActivityLog {
     }
 
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
         this.loggedAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public ActivityType getActivityType() { return activityType; }
-    public User getUser() { return user; }
-    public double getQuantity() { return quantity; }
-    public LocalDate getActivityDate() { return activityDate; }
-    public LocalDateTime getLoggedAt() { return loggedAt; }
-    public double getEstimatedEmission() { return estimatedEmission; }
+    // Getters & Setters
 
-    public void setId(Long id) { this.id = id; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-    public void setUser(User user) { this.user = user; }
-    public void setQuantity(double quantity) { this.quantity = quantity; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
-    public void setEstimatedEmission(double estimatedEmission) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
+    
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
+    }
+
+    public LocalDateTime getLoggedAt() {
+        return loggedAt;
+    }
+
+    public Double getEstimatedEmission() {
+        return estimatedEmission;
+    }
+    
+    public void setEstimatedEmission(Double estimatedEmission) {
         this.estimatedEmission = estimatedEmission;
     }
 }
