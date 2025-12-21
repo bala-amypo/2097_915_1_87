@@ -13,6 +13,8 @@ public class ActivityLog {
 
     private LocalDate activityDate;
 
+    private double quantity;
+
     private double estimatedEmission;
 
     private LocalDateTime loggedAt = LocalDateTime.now();
@@ -23,7 +25,7 @@ public class ActivityLog {
     @ManyToOne
     private ActivityType activityType;
 
-    /* ================= REQUIRED BY TESTS ================= */
+    /* ===== REQUIRED GETTERS / SETTERS ===== */
 
     public LocalDate getActivityDate() {
         return activityDate;
@@ -31,6 +33,14 @@ public class ActivityLog {
 
     public void setActivityDate(LocalDate activityDate) {
         this.activityDate = activityDate;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
     }
 
     public LocalDateTime getLoggedAt() {
@@ -48,8 +58,6 @@ public class ActivityLog {
     public void setEstimatedEmission(double estimatedEmission) {
         this.estimatedEmission = estimatedEmission;
     }
-
-    /* ================= STANDARD ================= */
 
     public Long getId() {
         return id;
