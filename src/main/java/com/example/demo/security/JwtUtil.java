@@ -15,7 +15,6 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    // MUST be static & consistent for tests
     private static final String SECRET_KEY =
             "carbonfootprintcarbonfootprintcarbonfootprintcarbonfootprint";
 
@@ -27,7 +26,6 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    // Used by AuthController
     public String generateTokenForUser(User user) {
 
         Map<String, Object> claims = new HashMap<>();
@@ -44,12 +42,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ===================== REQUIRED BY TESTS =====================
-
-    /**
-     * Tests call this method directly.
-     * It MUST return Claims.
-     */
+    // REQUIRED BY TESTS
     public Claims parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -58,17 +51,26 @@ public class JwtUtil {
                 .getBody();
     }
 
-    // =============================================================
-
-    // Used by filters / security
     public String extractUsername(String token) {
         return parseToken(token).getSubject();
     }
 
+    // Used by tests
     public boolean isTokenValid(String token) {
         try {
             parseToken(token);
             return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    // ✅ Used by JwtAuthenticationFilter
+    public boolean isTokenValid(String token, String username) {
+        try {
+            String extractedUsername = extractUsername(token);
+            return extractedUsername.equals(username)
+                    && !parseToken(token).getExpiration().before(new Date());
         } catch (Exception ex) {
             return false;
         }
