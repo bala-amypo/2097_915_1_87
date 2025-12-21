@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class JwtUtil {
 
-    // jjwt 0.9.1 uses plain secret string
     private static final String SECRET =
             "thisIsASecretKeyForJwtWhichMustBeLongEnough";
 
@@ -43,17 +42,17 @@ public class JwtUtil {
                 .parse(token);
     }
 
-    // ================= HELPERS =================
+    // ================= HELPERS (CORRECT FOR 0.9.1) =================
     public String extractUsername(String token) {
-        return parseToken(token).getPayload().getSubject();
+        return parseToken(token).getBody().getSubject();
     }
 
     public String extractRole(String token) {
-        return parseToken(token).getPayload().get("role", String.class);
+        return parseToken(token).getBody().get("role", String.class);
     }
 
     public Long extractUserId(String token) {
-        return parseToken(token).getPayload().get("userId", Long.class);
+        return parseToken(token).getBody().get("userId", Long.class);
     }
 
     public boolean isTokenValid(String token, String username) {
