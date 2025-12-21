@@ -11,10 +11,12 @@ import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.repository.EmissionFactorRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ActivityLogService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class ActivityLogServiceImpl implements ActivityLogService {
 
     private final ActivityLogRepository logRepository;
@@ -22,7 +24,7 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     private final ActivityTypeRepository typeRepository;
     private final EmissionFactorRepository factorRepository;
 
-    // ⚠️ EXACT constructor order (critical)
+    // EXACT constructor order (CRITICAL)
     public ActivityLogServiceImpl(ActivityLogRepository logRepository,
                                   UserRepository userRepository,
                                   ActivityTypeRepository typeRepository,
@@ -68,7 +70,9 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     }
 
     @Override
-    public List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate start, LocalDate end) {
+    public List<ActivityLog> getLogsByUserAndDate(Long userId,
+                                                  LocalDate start,
+                                                  LocalDate end) {
         return logRepository.findByUser_IdAndActivityDateBetween(userId, start, end);
     }
 

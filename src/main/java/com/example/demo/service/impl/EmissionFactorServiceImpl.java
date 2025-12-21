@@ -7,15 +7,17 @@ import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.repository.EmissionFactorRepository;
 import com.example.demo.service.EmissionFactorService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class EmissionFactorServiceImpl implements EmissionFactorService {
 
     private final EmissionFactorRepository factorRepository;
     private final ActivityTypeRepository typeRepository;
 
-    // ⚠️ EXACT constructor order
+    // EXACT constructor order
     public EmissionFactorServiceImpl(EmissionFactorRepository factorRepository,
                                      ActivityTypeRepository typeRepository) {
         this.factorRepository = factorRepository;

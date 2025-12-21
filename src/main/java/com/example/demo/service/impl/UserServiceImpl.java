@@ -6,15 +6,17 @@ import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // ⚠️ EXACT constructor order (tests rely on this)
+    // EXACT constructor order (tests depend on this)
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user) {
+
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ValidationException("Email already in use");
         }
