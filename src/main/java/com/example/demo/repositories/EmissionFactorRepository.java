@@ -1,11 +1,11 @@
 package com.example.demo.repository;
 
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.entity.EmissionFactor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmissionFactorRepository
-        extends JpaRepository<EmissionFactor, Long> {
+import java.util.Optional;
 
-    Optional<EmissionFactor> findByActivityType_Id(Long activityTypeId);
+public interface EmissionFactorRepository extends JpaRepository<EmissionFactor, Long> {
+
+    Optional<EmissionFactor> findByActivityType_Id(Long typeId);
 }
