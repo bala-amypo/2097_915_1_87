@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ActivityCategoryRepository extends JpaRepository<ActivityCategory, Long> {
+    // You can add custom query methods if needed
 }

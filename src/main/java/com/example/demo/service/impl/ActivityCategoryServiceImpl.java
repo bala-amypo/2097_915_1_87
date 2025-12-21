@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityCategory;
-import com.example.demo.repository.ActivityCategoryRepository;
+import com.example.demo.repository.ActivityCategoryRepository; // <-- corrected
 import com.example.demo.service.ActivityCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,24 +26,12 @@ public class ActivityCategoryServiceImpl implements ActivityCategoryService {
     }
 
     @Override
-    public Optional<ActivityCategory> getCategoryById(Long id) {
+    public Optional<ActivityCategory> getCategory(Long id) {
         return categoryRepository.findById(id);
     }
 
     @Override
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
-    }
-
-    @Override
-    public String getCategoryNameById(Long id) {
-        return categoryRepository.findById(id)
-                .map(ActivityCategory::getCategoryName)
-                .orElse(null);
-    }
-
-    @Override
-    public Optional<ActivityCategory> getCategory(Long id) {
-        return categoryRepository.findById(id);
     }
 }
