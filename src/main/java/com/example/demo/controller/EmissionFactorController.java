@@ -16,8 +16,18 @@ public class EmissionFactorController {
         this.service = service;
     }
 
+    @PostMapping
+    public EmissionFactor create(@RequestBody EmissionFactor factor) {
+        return service.save(factor);
+    }
+
     @GetMapping
     public List<EmissionFactor> getAll() {
-        return service.getAllFactors();
+        return service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public EmissionFactor getById(@PathVariable Long id) {
+        return service.getById(id);
     }
 }
