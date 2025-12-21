@@ -15,18 +15,12 @@ public class ActivityCategory {
     private String categoryName;
 
     private String description;
-
     private LocalDateTime createdAt;
 
-    // No-arg constructor (JPA + tests)
-    public ActivityCategory() {
-    }
+    public ActivityCategory() {}
 
-    // Constructor REQUIRED by tests
-    public ActivityCategory(Long id,
-                            String categoryName,
-                            String description,
-                            LocalDateTime createdAt) {
+    public ActivityCategory(Long id, String categoryName,
+                            String description, LocalDateTime createdAt) {
         this.id = id;
         this.categoryName = categoryName;
         this.description = description;
@@ -34,37 +28,14 @@ public class ActivityCategory {
     }
 
     @PrePersist
-    public void onCreate() {
+    public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
+    public Long getId() { return id; }
+    public String getCategoryName() { return categoryName; }
+    public String getDescription() { return description; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 }
