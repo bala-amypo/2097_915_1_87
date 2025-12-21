@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 public class ActivityLog {
@@ -11,28 +10,24 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate activityDate;
-
     private double quantity;
 
     private double estimatedEmission;
 
-    private LocalDateTime loggedAt = LocalDateTime.now();
+    private LocalDate activityDate;
 
     @ManyToOne
-    private User user;
-
-    @ManyToOne
+    @JoinColumn(name = "activity_type_id")
     private ActivityType activityType;
 
-    /* ===== REQUIRED GETTERS / SETTERS ===== */
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public LocalDate getActivityDate() {
-        return activityDate;
-    }
+    // ===== GETTERS & SETTERS =====
 
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
+    public Long getId() {
+        return id;
     }
 
     public double getQuantity() {
@@ -43,23 +38,35 @@ public class ActivityLog {
         this.quantity = quantity;
     }
 
-    public LocalDateTime getLoggedAt() {
-        return loggedAt;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
+    public double getEstimatedEmission() {
+        return estimatedEmission;
     }
 
     public void setEstimatedEmission(double estimatedEmission) {
         this.estimatedEmission = estimatedEmission;
     }
 
-    public Long getId() {
-        return id;
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
+
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
