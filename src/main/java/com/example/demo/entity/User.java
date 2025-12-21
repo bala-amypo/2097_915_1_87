@@ -4,28 +4,30 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
 
-    private String role; // <-- Add this field
+    private String role; // for Spring Security
 
     private LocalDateTime createdAt;
 
     public User() {}
 
-    public User(Long id, String name, String email, String password, String role, LocalDateTime createdAt) {
-        this.id = id;
+    public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;  // <-- Initialize role
-        this.createdAt = createdAt;
+        this.role = role;
     }
 
     @PrePersist
@@ -46,8 +48,8 @@ public class User {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public String getRole() { return role; }   // <-- Add getter
-    public void setRole(String role) { this.role = role; }  // <-- Add setter
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 }

@@ -14,12 +14,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
-        // Convert Optional<User> to User
-        return userService.getUser(id).orElse(null);
+        return userService.getUser(id);
     }
 
-    @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
-        return userService.registerUser(user);
+    @PostMapping("/")
+    public User createUser(@RequestBody User user) {
+        return userService.saveUser(user);
     }
 }
