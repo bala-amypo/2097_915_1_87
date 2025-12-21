@@ -38,7 +38,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ================= TOKEN PARSING (CRITICAL FIX) =================
+    // ================= TOKEN PARSING =================
     public Jwt<?, Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
@@ -46,17 +46,17 @@ public class JwtUtil {
                 .parse(token);
     }
 
-    // ================= HELPERS =================
+    // ================= HELPERS (FIXED) =================
     public String extractUsername(String token) {
-        return parseToken(token).getPayload().getSubject();
+        return parseToken(token).getBody().getSubject();
     }
 
     public String extractRole(String token) {
-        return parseToken(token).getPayload().get("role", String.class);
+        return parseToken(token).getBody().get("role", String.class);
     }
 
     public Long extractUserId(String token) {
-        return parseToken(token).getPayload().get("userId", Long.class);
+        return parseToken(token).getBody().get("userId", Long.class);
     }
 
     public boolean isTokenValid(String token, String username) {
