@@ -1,12 +1,33 @@
-package com.example.demo.service;
+package com.example.carbonfootprint.service.impl;
 
-import com.example.demo.entity.ActivityCategory;
+import com.example.carbonfootprint.entity.ActivityCategory;
+import com.example.carbonfootprint.repository.ActivityCategoryRepository;
+import com.example.carbonfootprint.service.ActivityCategoryService;
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-public interface ActivityCategoryService {
-    ActivityCategory addCategory(ActivityCategory category);
-    List<ActivityCategory> getAllCategories();
-    Optional<ActivityCategory> getCategory(Long id);
-    void deleteCategory(Long id);
+@Service
+public class ActivityCategoryServiceImpl implements ActivityCategoryService {
+
+    private final ActivityCategoryRepository categoryRepository;
+
+    public ActivityCategoryServiceImpl(ActivityCategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public ActivityCategory createCategory(ActivityCategory category) {
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Optional<ActivityCategory> getCategory(Long id) {
+        return categoryRepository.findById(id);
+    }
+
+    @Override
+    public List<ActivityCategory> getAllCategories() {
+        return categoryRepository.findAll();
+    }
 }

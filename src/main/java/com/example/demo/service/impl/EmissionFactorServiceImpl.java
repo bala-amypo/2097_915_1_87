@@ -1,34 +1,28 @@
-package com.example.demo.service.impl;
+package com.example.carbonfootprint.service.impl;
 
-import com.example.demo.entity.EmissionFactor;
-import com.example.demo.repository.EmissionFactorRepository;
-import com.example.demo.service.EmissionFactorService;
+import com.example.carbonfootprint.entity.EmissionFactor;
+import com.example.carbonfootprint.entity.ActivityType;
+import com.example.carbonfootprint.repository.EmissionFactorRepository;
+import com.example.carbonfootprint.service.EmissionFactorService;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
-import java.util.List;
-
-@Service   // 🔴 THIS WAS MISSING OR WRONG
+@Service
 public class EmissionFactorServiceImpl implements EmissionFactorService {
 
-    private final EmissionFactorRepository repository;
+    private final EmissionFactorRepository factorRepository;
 
-    public EmissionFactorServiceImpl(EmissionFactorRepository repository) {
-        this.repository = repository;
+    public EmissionFactorServiceImpl(EmissionFactorRepository factorRepository) {
+        this.factorRepository = factorRepository;
     }
 
     @Override
-    public EmissionFactor save(EmissionFactor factor) {
-        return repository.save(factor);
+    public EmissionFactor createFactor(EmissionFactor factor) {
+        return factorRepository.save(factor);
     }
 
     @Override
-    public List<EmissionFactor> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public EmissionFactor getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("EmissionFactor not found with id " + id));
+    public Optional<EmissionFactor> getFactorByActivityType(ActivityType type) {
+        return factorRepository.findByActivityType(type);
     }
 }

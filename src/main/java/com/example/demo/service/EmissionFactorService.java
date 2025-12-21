@@ -1,14 +1,10 @@
-package com.example.demo.service;
+package com.example.carbonfootprint.service;
 
-import com.example.demo.entity.EmissionFactor;
-
-import java.util.List;
+import com.example.carbonfootprint.entity.EmissionFactor;
+import com.example.carbonfootprint.entity.ActivityType;
+import java.util.Optional;
 
 public interface EmissionFactorService {
-
-    EmissionFactor save(EmissionFactor factor);
-
-    List<EmissionFactor> getAll();
-
-    EmissionFactor getById(Long id);
+    EmissionFactor createFactor(EmissionFactor factor);
+    Optional<EmissionFactor> getFactorByActivityType(ActivityType type);
 }

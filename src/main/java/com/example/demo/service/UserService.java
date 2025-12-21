@@ -1,10 +1,12 @@
-package com.example.demo.service;
+package com.example.carbonfootprint.service;
 
-import com.example.demo.entity.User;
+import com.example.carbonfootprint.entity.User;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    User getUser(Long id);
-    Optional<User> getByEmail(String email);
-    User saveUser(User user);
+    User createUser(User user);
+    Optional<User> getUser(Long id);
+    Optional<User> getUserByEmail(String email);
+    List<User> getAllUsers();
 }

@@ -1,12 +1,13 @@
-package com.example.demo.service;
+package com.example.carbonfootprint.service;
 
-import com.example.demo.entity.ActivityLog;
+import com.example.carbonfootprint.entity.ActivityLog;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface ActivityLogService {
     ActivityLog logActivity(ActivityLog log);
-    Optional<ActivityLog> getById(Long id);
-    List<ActivityLog> getLogsByUser(Long userId);
-    List<ActivityLog> getLogsByUserAndDate(Long userId, java.time.LocalDate start, java.time.LocalDate end);
+    Optional<ActivityLog> getLog(Long id);
+    List<ActivityLog> getAllLogs();
+    List<ActivityLog> getLogsForUserBetween(Long userId, LocalDate start, LocalDate end);
 }

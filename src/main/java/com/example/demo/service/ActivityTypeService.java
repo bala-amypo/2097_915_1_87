@@ -1,13 +1,12 @@
-package com.example.demo.service;
+package com.example.carbonfootprint.service;
 
-import com.example.demo.entity.ActivityType;
+import com.example.carbonfootprint.entity.ActivityType;
 import java.util.List;
+import java.util.Optional;
 
 public interface ActivityTypeService {
-
-    ActivityType createType(Long categoryId, ActivityType type);
-
-    ActivityType getType(Long id);
-
+    ActivityType createType(ActivityType type);
+    Optional<ActivityType> getType(Long id);
+    List<ActivityType> getAllTypes();
     List<ActivityType> getTypesByCategory(Long categoryId);
 }

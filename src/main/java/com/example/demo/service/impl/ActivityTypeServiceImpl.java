@@ -1,43 +1,38 @@
-package com.example.demo.service.impl;
+package com.example.carbonfootprint.service.impl;
 
-import com.example.demo.entity.ActivityCategory;
-import com.example.demo.entity.ActivityType;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.ActivityCategoryRepository;
-import com.example.demo.repository.ActivityTypeRepository;
-import com.example.demo.service.ActivityTypeService;
+import com.example.carbonfootprint.entity.ActivityType;
+import com.example.carbonfootprint.repository.ActivityTypeRepository;
+import com.example.carbonfootprint.service.ActivityTypeService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityTypeServiceImpl implements ActivityTypeService {
 
-    private final ActivityTypeRepository typeRepo;
-    private final ActivityCategoryRepository categoryRepo;
+    private final ActivityTypeRepository typeRepository;
 
-    public ActivityTypeServiceImpl(ActivityTypeRepository typeRepo,
-                                   ActivityCategoryRepository categoryRepo) {
-        this.typeRepo = typeRepo;
-        this.categoryRepo = categoryRepo;
+    public ActivityTypeServiceImpl(ActivityTypeRepository typeRepository) {
+        this.typeRepository = typeRepository;
     }
 
     @Override
-    public ActivityType createType(Long categoryId, ActivityType type) {
-        ActivityCategory category = categoryRepo.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-        type.setCategory(category);
-        return typeRepo.save(type);
+    public ActivityType createType(ActivityType type) {
+        return typeRepository.save(type);
     }
 
     @Override
-    public ActivityType getType(Long id) {
-        return typeRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    public Optional<ActivityType> getType(Long id) {
+        return typeRepository.findById(id);
+    }
+
+    @Override
+    public List<ActivityType> getAllTypes() {
+        return typeRepository.findAll();
     }
 
     @Override
     public List<ActivityType> getTypesByCategory(Long categoryId) {
-        return typeRepo.findByCategory_Id(categoryId);
+        return typeRepository.findByCategoryId(categoryId);
     }
 }
