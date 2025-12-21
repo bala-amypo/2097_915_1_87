@@ -7,12 +7,28 @@ public class ActivityLogRequest {
     private Double quantity;
     private LocalDate activityDate;
 
+    // REQUIRED by tests
+    public ActivityLogRequest(double quantity, LocalDate activityDate) {
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+    }
+
     public ActivityLogRequest() {
     }
 
-    public Double getQuantity() { return quantity; }
-    public LocalDate getActivityDate() { return activityDate; }
+    public Double getQuantity() {
+        return quantity;
+    }
 
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
+
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
+    }
 }
