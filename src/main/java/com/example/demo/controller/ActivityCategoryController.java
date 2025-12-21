@@ -1,36 +1,31 @@
-package com.example.carbonfootprint.controller;
+package com.example.demo.controller;
 
-import com.example.carbonfootprint.entity.ActivityCategory;
-import com.example.carbonfootprint.service.ActivityCategoryService;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.entity.ActivityCategory;
+import com.example.demo.service.ActivityCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/categories")
 public class ActivityCategoryController {
 
-    private final ActivityCategoryService categoryService;
+    @Autowired
+    private ActivityCategoryService categoryService;
 
-    public ActivityCategoryController(ActivityCategoryService categoryService) {
-        this.categoryService = categoryService;
+    @PostMapping("/add")
+    public ActivityCategory addCategory(@RequestBody ActivityCategory category) {
+        return categoryService.addCategory(category); // fixed method name
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ActivityCategory> getCategory(@PathVariable Long id) {
-        return categoryService.getCategory(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ActivityCategory getCategory(@PathVariable Long id) {
+        return categoryService.getCategory(id).orElse(null); // convert Optional properly
     }
 
-    @GetMapping
-    public ResponseEntity<List<ActivityCategory>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
-    }
-
-    @PostMapping
-    public ResponseEntity<ActivityCategory> createCategory(@RequestBody ActivityCategory category) {
-        return ResponseEntity.ok(categoryService.createCategory(category));
+    @GetMapping("/all")
+    public List<ActivityCategory> getAllCategories() {
+        return categoryService.getAllCategories();
     }
 }

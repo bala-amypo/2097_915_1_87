@@ -1,21 +1,20 @@
-package com.example.carbonfootprint.service.impl;
+package com.example.demo.service.impl;
 
-import com.example.carbonfootprint.entity.ActivityLog;
-import com.example.carbonfootprint.repository.ActivityLogRepository;
-import com.example.carbonfootprint.service.ActivityLogService;
+import com.example.demo.entity.ActivityLog;
+import com.example.demo.repository.ActivityLogRepository;
+import com.example.demo.service.ActivityLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class ActivityLogServiceImpl implements ActivityLogService {
 
-    private final ActivityLogRepository logRepository;
-
-    public ActivityLogServiceImpl(ActivityLogRepository logRepository) {
-        this.logRepository = logRepository;
-    }
+    @Autowired
+    private ActivityLogRepository logRepository;
 
     @Override
     public ActivityLog logActivity(ActivityLog log) {
@@ -23,17 +22,17 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     }
 
     @Override
-    public Optional<ActivityLog> getLog(Long id) {
+    public Optional<ActivityLog> getById(Long id) {
         return logRepository.findById(id);
     }
 
     @Override
-    public List<ActivityLog> getAllLogs() {
-        return logRepository.findAll();
+    public List<ActivityLog> getLogsByUser(Long userId) {
+        return logRepository.findByUser_Id(userId);
     }
 
     @Override
-    public List<ActivityLog> getLogsForUserBetween(Long userId, LocalDate start, LocalDate end) {
-        return logRepository.findByUser_IdAndActivityDateBetween(userId, start, end);
+    public List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate start, LocalDate end) {
+        return logRepository.findByUser_IdAndLogDateBetween(userId, start, end);
     }
 }
