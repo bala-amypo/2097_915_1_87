@@ -17,7 +17,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    // ===== USED BY CONTROLLERS =====
+    // ================= TOKEN CREATION =================
     public String generateTokenForUser(User user) {
         return generateToken(
                 Map.of(
@@ -28,7 +28,6 @@ public class JwtUtil {
         );
     }
 
-    // ===== USED BY TESTS =====
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -39,31 +38,27 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Jws<Claims> parseToken(String token) {
+    // ================= TOKEN PARSING (CRITICAL FIX) =================
+    public Jwt<?, Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
-                .parseClaimsJws(token);
+                .parse(token);
     }
 
-    // ✅ TESTS EXPECT getPayload()
-    public Claims getPayload(String token) {
-        return parseToken(token).getBody();
-    }
-
+    // ================= HELPERS =================
     public String extractUsername(String token) {
-        return getPayload(token).getSubject();
+        return parseToken(token).getPayload().getSubject();
     }
 
     public String extractRole(String token) {
-        return getPayload(token).get("role", String.class);
+        return parseToken(token).getPayload().get("role", String.class);
     }
 
     public Long extractUserId(String token) {
-        return getPayload(token).get("userId", Long.class);
+        return parseToken(token).getPayload().get("userId", Long.class);
     }
 
-    // ✅ FILTER EXPECTS THIS
     public boolean isTokenValid(String token, String username) {
         try {
             return extractUsername(token).equals(username);
