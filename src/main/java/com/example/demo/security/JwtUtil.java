@@ -1,61 +1,62 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
     private static final String SECRET =
-            "mysecretkeymysecretkeymysecretkey12345";
+            "carbonfootprint_secret_key_123456carbonfootprint_secret_key";
+
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
-    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+    }
 
-    /* ================= TOKEN CREATION ================= */
+    /* ==================== REQUIRED BY TEST ==================== */
 
-    public String generateTokenForUser(User user) {
+    public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("role", user.getRole())
+                .setClaims(claims)
+                .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + EXPIRATION_TIME)
-                )
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    /* ================= TOKEN READING ================= */
-
-    public Claims extractClaims(String token) {
+    public Claims parseToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    /* ✅ REQUIRED BY JwtAuthenticationFilter */
     public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
+        return parseToken(token).getSubject();
     }
 
-    public boolean isTokenValid(String token, String email) {
-        String tokenEmail = extractUsername(token);
-        return tokenEmail.equals(email) && !isTokenExpired(token);
+    public String extractRole(String token) {
+        return parseToken(token).get("role", String.class);
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaims(token)
-                .getExpiration()
-                .before(new Date());
+    public Long extractUserId(String token) {
+        return parseToken(token).get("userId", Long.class);
+    }
+
+    public boolean isTokenValid(String token, String username) {
+        return extractUsername(token).equals(username)
+                && parseToken(token).getExpiration().after(new Date());
     }
 }
