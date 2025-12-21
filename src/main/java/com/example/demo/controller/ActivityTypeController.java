@@ -2,35 +2,33 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ActivityType;
 import com.example.demo.service.ActivityTypeService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/types")
-@Tag(name = "Activity Types")
 public class ActivityTypeController {
 
-    private final ActivityTypeService service;
+    private final ActivityTypeService typeService;
 
-    public ActivityTypeController(ActivityTypeService service) {
-        this.service = service;
+    public ActivityTypeController(ActivityTypeService typeService) {
+        this.typeService = typeService;
     }
 
     @PostMapping("/category/{categoryId}")
     public ActivityType create(@PathVariable Long categoryId,
                                @RequestBody ActivityType type) {
-        return service.createType(categoryId, type);
+        return typeService.createType(categoryId, type);
     }
 
     @GetMapping("/{id}")
     public ActivityType get(@PathVariable Long id) {
-        return service.getType(id);
+        return typeService.getType(id);
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<ActivityType> byCategory(@PathVariable Long categoryId) {
-        return service.getTypesByCategory(categoryId);
+    public List<ActivityType> getByCategory(@PathVariable Long categoryId) {
+        return typeService.getTypesByCategory(categoryId);
     }
 }

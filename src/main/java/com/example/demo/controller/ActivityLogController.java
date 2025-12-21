@@ -1,20 +1,44 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ActivityLogRequest;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.entity.ActivityLog;
+import com.example.demo.service.ActivityLogService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/activity")
+@RequestMapping("/api/logs")
 public class ActivityLogController {
 
-    @PostMapping
-    public ResponseEntity<String> logActivity(@RequestBody ActivityLogRequest req) {
+    private final ActivityLogService logService;
 
-        double quantity = req.getQuantity();
-        var date = req.getActivityDate();
+    public ActivityLogController(ActivityLogService logService) {
+        this.logService = logService;
+    }
 
-        // business logic placeholder
-        return ResponseEntity.ok("Activity logged: " + quantity + " on " + date);
+    @PostMapping("/{userId}/{typeId}")
+    public ActivityLog log(@PathVariable Long userId,
+                           @PathVariable Long typeId,
+                           @RequestBody ActivityLogRequest request) {
+
+        ActivityLog log = new ActivityLog();
+        log.setQuantity(request.getQuantity());
+        log.setActivityDate(request.getActivityDate());
+
+        return logService.logActivity(userId, typeId, log);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<ActivityLog> getByUser(@PathVariable Long userId) {
+        return logService.getLogsByUser(userId);
+    }
+
+    @GetMapping("/user/{userId}/range")
+    public List<ActivityLog> getByDateRange(@PathVariable Long userId,
+                                            @RequestParam LocalDate start,
+                                            @RequestParam LocalDate end) {
+        return logService.getLogsByUserAndDate(userId, start, end);
     }
 }
