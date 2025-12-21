@@ -1,64 +1,23 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import com.example.demo.entity.EmissionFactor;
+import com.example.demo.service.EmissionFactorService;
+import org.springframework.web.bind.annotation.*;
 
-@Entity
-@Table(name = "emission_factors")
-public class EmissionFactor {
+import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@RestController
+@RequestMapping("/api/emission-factors")
+public class EmissionFactorController {
 
-    @ManyToOne
-    private ActivityType activityType;
+    private final EmissionFactorService service;
 
-    private Double factorValue;
-    private String unit;
-    private LocalDateTime createdAt;
-
-    public EmissionFactor() {}
-
-    public EmissionFactor(Long id,
-                          ActivityType activityType,
-                          Double factorValue,
-                          String unit,
-                          LocalDateTime createdAt) {
-        this.id = id;
-        this.activityType = activityType;
-        this.factorValue = factorValue;
-        this.unit = unit;
-        this.createdAt = createdAt;
+    public EmissionFactorController(EmissionFactorService service) {
+        this.service = service;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    // ===== REQUIRED BY SERVICES & TESTS =====
-    public Long getId() {
-        return id;
-    }
-
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public Double getFactorValue() {
-        return factorValue;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
-
-    public void setFactorValue(Double factorValue) {
-        this.factorValue = factorValue;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
+    @GetMapping
+    public List<EmissionFactor> getAll() {
+        return service.getAllFactors();
     }
 }
