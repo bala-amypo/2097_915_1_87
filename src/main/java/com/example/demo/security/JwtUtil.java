@@ -5,7 +5,9 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JwtUtil {
 
@@ -16,8 +18,9 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    // ===== TOKEN GENERATION =====
+    // ================= TOKEN GENERATION =================
     public String generateTokenForUser(User user) {
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
         claims.put("role", user.getRole());
@@ -31,16 +34,16 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ===== TOKEN PARSING (TESTS REQUIRE THIS) =====
-    public Jwt<?> parseToken(String token) {
+    // ================= TOKEN PARSING (TESTS REQUIRE THIS) =================
+    public Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
-                .parse(token);
+                .parseClaimsJws(token);
     }
 
     public String extractUsername(String token) {
-        return ((Claims) parseToken(token).getBody()).getSubject();
+        return parseToken(token).getBody().getSubject();
     }
 
     public boolean isTokenValid(String token, String username) {
