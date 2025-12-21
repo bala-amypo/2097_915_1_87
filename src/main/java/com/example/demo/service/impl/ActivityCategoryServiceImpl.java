@@ -1,39 +1,43 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityCategory;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.ActivityCategoryRepository;
 import com.example.demo.service.ActivityCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityCategoryServiceImpl implements ActivityCategoryService {
 
-    private final ActivityCategoryRepository repository;
-
-    public ActivityCategoryServiceImpl(ActivityCategoryRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private ActivityCategoryRepository categoryRepository;
 
     @Override
-    public ActivityCategory createCategory(ActivityCategory category) {
-        if (repository.existsByCategoryName(category.getCategoryName())) {
-            throw new ValidationException("Category name must be unique");
-        }
-        return repository.save(category);
-    }
-
-    @Override
-    public ActivityCategory getCategory(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    public ActivityCategory addCategory(ActivityCategory category) {
+        return categoryRepository.save(category);
     }
 
     @Override
     public List<ActivityCategory> getAllCategories() {
-        return repository.findAll();
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Optional<ActivityCategory> getCategoryById(Long id) {
+        return categoryRepository.findById(id);
+    }
+
+    @Override
+    public void deleteCategory(Long id) {
+        categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public String getCategoryNameById(Long id) {
+        Optional<ActivityCategory> category = categoryRepository.findById(id);
+        return category.map(ActivityCategory::getCategoryName).orElse(null);
     }
 }

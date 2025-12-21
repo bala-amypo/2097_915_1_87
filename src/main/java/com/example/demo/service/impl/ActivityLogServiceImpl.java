@@ -2,27 +2,42 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityLog;
 import com.example.demo.repository.ActivityLogRepository;
+import com.example.demo.service.ActivityLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ActivityLogServiceImpl {
+public class ActivityLogServiceImpl implements ActivityLogService {
 
     @Autowired
     private ActivityLogRepository logRepository;
 
-    public ActivityLog logActivity(long userId, long activityTypeId, ActivityLog log) {
+    @Override
+    public ActivityLog logActivity(ActivityLog log) {
         return logRepository.save(log);
     }
 
-    public List<ActivityLog> getLogsByUser(long userId) {
+    @Override
+    public List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate startDate, LocalDate endDate) {
+        return logRepository.findByUser_IdAndLogDateBetween(userId, startDate, endDate);
+    }
+
+    @Override
+    public List<ActivityLog> getLogsByUser(Long userId) {
         return logRepository.findByUser_Id(userId);
     }
 
-    public List<ActivityLog> getLogsByUserAndDate(long userId, LocalDate from, LocalDate to) {
-        return logRepository.findByUser_IdAndLogDateBetween(userId, from, to);
+    @Override
+    public Optional<ActivityLog> getLogById(Long id) {
+        return logRepository.findById(id);
+    }
+
+    @Override
+    public void deleteLog(Long id) {
+        logRepository.deleteById(id);
     }
 }
