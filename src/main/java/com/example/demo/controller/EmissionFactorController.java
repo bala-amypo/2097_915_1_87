@@ -1,39 +1,64 @@
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import com.example.demo.entity.EmissionFactor;
-import com.example.demo.service.EmissionFactorService;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-import java.util.List;
+@Entity
+@Table(name = "emission_factors")
+public class EmissionFactor {
 
-@RestController
-@RequestMapping("/api/factors")
-public class EmissionFactorController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final EmissionFactorService factorService;
+    @ManyToOne
+    private ActivityType activityType;
 
-    public EmissionFactorController(EmissionFactorService factorService) {
-        this.factorService = factorService;
+    private Double factorValue;
+    private String unit;
+    private LocalDateTime createdAt;
+
+    public EmissionFactor() {}
+
+    public EmissionFactor(Long id,
+                          ActivityType activityType,
+                          Double factorValue,
+                          String unit,
+                          LocalDateTime createdAt) {
+        this.id = id;
+        this.activityType = activityType;
+        this.factorValue = factorValue;
+        this.unit = unit;
+        this.createdAt = createdAt;
     }
 
-    @PostMapping("/{activityTypeId}")
-    public EmissionFactor create(@PathVariable Long activityTypeId,
-                                 @RequestBody EmissionFactor factor) {
-        return factorService.createFactor(activityTypeId, factor);
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    @GetMapping("/{id}")
-    public EmissionFactor get(@PathVariable Long id) {
-        return factorService.getFactor(id);
+    // ===== REQUIRED BY SERVICES & TESTS =====
+    public Long getId() {
+        return id;
     }
 
-    @GetMapping("/type/{typeId}")
-    public EmissionFactor getByType(@PathVariable Long typeId) {
-        return factorService.getFactorByType(typeId);
+    public ActivityType getActivityType() {
+        return activityType;
     }
 
-    @GetMapping
-    public List<EmissionFactor> getAll() {
-        return factorService.getAllFactors();
+    public Double getFactorValue() {
+        return factorValue;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public void setFactorValue(Double factorValue) {
+        this.factorValue = factorValue;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

@@ -25,7 +25,7 @@ public class ActivityLog {
 
     public ActivityLog() {}
 
-    // ✅ REQUIRED FULL CONSTRUCTOR (TESTS USE THIS)
+    // ✅ TESTS USE THIS CONSTRUCTOR
     public ActivityLog(Long id,
                        ActivityType activityType,
                        User user,
@@ -47,7 +47,7 @@ public class ActivityLog {
         this.loggedAt = LocalDateTime.now();
     }
 
-    // ✅ REQUIRED BY TESTS
+    // ===== GETTERS EXPECTED BY TESTS & SERVICES =====
     public Long getId() {
         return id;
     }
@@ -64,20 +64,29 @@ public class ActivityLog {
         return estimatedEmission;
     }
 
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
+    public LocalDate getActivityDate() {
+        return activityDate;
     }
 
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
+    public Double getQuantity() {
+        return quantity;
     }
 
+    // ===== SETTERS =====
     public void setUser(User user) {
         this.user = user;
     }
 
     public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
     }
 
     public void setEstimatedEmission(Double estimatedEmission) {
