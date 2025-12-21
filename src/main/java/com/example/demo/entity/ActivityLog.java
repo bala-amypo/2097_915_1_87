@@ -25,28 +25,38 @@ public class ActivityLog {
 
     public ActivityLog() {}
 
-    public ActivityLog(Long id, ActivityType activityType, User user,
-                       Double quantity, LocalDate activityDate,
-                       LocalDateTime loggedAt, Double estimatedEmission) {
-        this.id = id;
-        this.activityType = activityType;
-        this.user = user;
-        this.quantity = quantity;
-        this.activityDate = activityDate;
-        this.loggedAt = loggedAt;
-        this.estimatedEmission = estimatedEmission;
-    }
-
     @PrePersist
     public void prePersist() {
         this.loggedAt = LocalDateTime.now();
     }
 
-    public void setUser(User user) { this.user = user; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+    // ===== REQUIRED SETTERS =====
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
     public void setEstimatedEmission(Double estimatedEmission) {
         this.estimatedEmission = estimatedEmission;
     }
-    public Double getQuantity() { return quantity; }
-    public LocalDate getActivityDate() { return activityDate; }
+
+    // ===== REQUIRED GETTERS =====
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
 }
