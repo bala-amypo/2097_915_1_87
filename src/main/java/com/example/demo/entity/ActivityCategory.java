@@ -10,31 +10,27 @@ public class ActivityCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String categoryName;
 
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    /* ================= REQUIRED BY TEST ================= */
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    /* ================= STANDARD GETTERS / SETTERS ================= */
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

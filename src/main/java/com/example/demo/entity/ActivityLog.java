@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,40 +11,47 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String activityName;
-    private Double quantity;
+    private LocalDate activityDate;
+
+    private double estimatedEmission;
 
     private LocalDateTime loggedAt = LocalDateTime.now();
 
-    /* ================= REQUIRED BY TEST ================= */
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private ActivityType activityType;
+
+    /* ================= REQUIRED BY TESTS ================= */
+
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
+
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
+    }
 
     public LocalDateTime getLoggedAt() {
         return loggedAt;
     }
 
-    /* ================= STANDARD GETTERS / SETTERS ================= */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public void setEstimatedEmission(double estimatedEmission) {
+        this.estimatedEmission = estimatedEmission;
+    }
+
+    /* ================= STANDARD ================= */
 
     public Long getId() {
         return id;
-    }
-
-    public String getActivityName() {
-        return activityName;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setActivityName(String activityName) {
-        this.activityName = activityName;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
     }
 }
