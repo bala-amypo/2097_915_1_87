@@ -18,7 +18,7 @@ public class EmissionFactor {
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void onCreate() {
+    void onCreate() {
         createdAt = LocalDateTime.now();
     }
 
@@ -32,5 +32,5 @@ public class EmissionFactor {
         this.createdAt = createdAt;
     }
 
-    // getters and setters
+    // getters & setters
 }

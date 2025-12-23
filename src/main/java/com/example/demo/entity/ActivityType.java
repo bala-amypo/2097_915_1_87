@@ -19,7 +19,7 @@ public class ActivityType {
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void onCreate() {
+    void onCreate() {
         createdAt = LocalDateTime.now();
     }
 
@@ -33,5 +33,5 @@ public class ActivityType {
         this.createdAt = createdAt;
     }
 
-    // getters and setters
+    // getters & setters
 }

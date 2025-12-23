@@ -15,11 +15,10 @@ public class User {
     private String email;
     private String password;
     private String role;
-
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void onCreate() {
+    void onCreate() {
         createdAt = LocalDateTime.now();
     }
 
@@ -34,5 +33,5 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    // getters and setters
+    // getters & setters
 }
