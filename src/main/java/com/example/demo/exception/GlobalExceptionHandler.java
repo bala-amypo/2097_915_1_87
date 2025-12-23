@@ -1,7 +1,7 @@
 package com.example.demo.exception;
 
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
