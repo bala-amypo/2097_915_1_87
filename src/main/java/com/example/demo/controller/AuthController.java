@@ -1,46 +1,44 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.JwtResponse;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.User;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.example.demo.dto.ActivityLogRequest;
+import com.example.demo.entity.ActivityLog;
+import com.example.demo.service.ActivityLogService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/api/logs")
+public class ActivityLogController {
 
-    private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private final ActivityLogService service;
 
-    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+    public ActivityLogController(ActivityLogService service) {
+        this.service = service;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-        User user = new User();
-        user.setFullName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        return ResponseEntity.ok(userService.registerUser(user));
+    @PostMapping("/{userId}/{typeId}")
+    public ActivityLog log(@PathVariable Long userId,
+                           @PathVariable Long typeId,
+                           @RequestBody ActivityLogRequest request) {
+
+        ActivityLog log = new ActivityLog();
+        log.setQuantity(request.getQuantity());
+        log.setActivityDate(request.getActivityDate());
+
+        return service.logActivity(userId, typeId, log);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        User user = userService.getByEmail(request.getEmail());
-        String token = jwtUtil.generateTokenForUser(user);
-        return ResponseEntity.ok(new JwtResponse(token));
+    @GetMapping("/user/{userId}")
+    public List<ActivityLog> getByUser(@PathVariable Long userId) {
+        return service.getLogsByUser(userId);
+    }
+
+    @GetMapping("/user/{userId}/range")
+    public List<ActivityLog> getByUserAndDate(@PathVariable Long userId,
+                                              @RequestParam LocalDate start,
+                                              @RequestParam LocalDate end) {
+        return service.getLogsByUserAndDate(userId, start, end);
     }
 }
