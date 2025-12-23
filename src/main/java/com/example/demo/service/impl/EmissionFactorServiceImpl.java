@@ -17,20 +17,22 @@ public class EmissionFactorServiceImpl implements EmissionFactorService {
     private final EmissionFactorRepository factorRepository;
     private final ActivityTypeRepository typeRepository;
 
-    public EmissionFactorServiceImpl(EmissionFactorRepository factorRepository, ActivityTypeRepository typeRepository) {
+    public EmissionFactorServiceImpl(EmissionFactorRepository factorRepository,
+                                     ActivityTypeRepository typeRepository) {
         this.factorRepository = factorRepository;
         this.typeRepository = typeRepository;
     }
 
     @Override
     public EmissionFactor createFactor(Long activityTypeId, EmissionFactor factor) {
-        ActivityType type = typeRepository.findById(activityTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found")); // Using generic or specific message as needed, sticking to patterns
-        
-        if (factor.getFactorValue() <= 0) {
+
+        if (factor.getFactorValue() == null || factor.getFactorValue() <= 0) {
             throw new ValidationException("Factor value must be greater than zero");
         }
-        
+
+        ActivityType type = typeRepository.findById(activityTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
         factor.setActivityType(type);
         return factorRepository.save(factor);
     }
