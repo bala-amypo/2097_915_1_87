@@ -21,12 +21,14 @@ public class ActivityCategory {
 
     public ActivityCategory() {}
 
-    public ActivityCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
-        this.id = id;
-        this.categoryName = categoryName;
-        this.description = description;
-        this.createdAt = createdAt;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    // getters & setters
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }

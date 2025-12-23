@@ -1,44 +1,48 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ActivityLogRequest;
-import com.example.demo.entity.ActivityLog;
-import com.example.demo.service.ActivityLogService;
+import com.example.demo.dto.JwtResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/logs")
-public class ActivityLogController {
+@RequestMapping("/auth")
+public class AuthController {
 
-    private final ActivityLogService service;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public ActivityLogController(ActivityLogService service) {
-        this.service = service;
+    public AuthController(UserService userService,
+                          UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
-    @PostMapping("/{userId}/{typeId}")
-    public ActivityLog log(@PathVariable Long userId,
-                           @PathVariable Long typeId,
-                           @RequestBody ActivityLogRequest request) {
+    @PostMapping("/register")
+    public User register(@RequestBody RegisterRequest request) {
 
-        ActivityLog log = new ActivityLog();
-        log.setQuantity(request.getQuantity());
-        log.setActivityDate(request.getActivityDate());
+        User user = new User();
+        user.setFullName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole("USER");
 
-        return service.logActivity(userId, typeId, log);
+        return userService.registerUser(user);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<ActivityLog> getByUser(@PathVariable Long userId) {
-        return service.getLogsByUser(userId);
-    }
+    @PostMapping("/login")
+    public JwtResponse login(@RequestBody LoginRequest request) {
 
-    @GetMapping("/user/{userId}/range")
-    public List<ActivityLog> getByUserAndDate(@PathVariable Long userId,
-                                              @RequestParam LocalDate start,
-                                              @RequestParam LocalDate end) {
-        return service.getLogsByUserAndDate(userId, start, end);
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        return new JwtResponse(
+                "dummy-token",
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }
