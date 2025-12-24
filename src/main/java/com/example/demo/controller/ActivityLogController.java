@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ActivityLogRequest;
 import com.example.demo.entity.ActivityLog;
 import com.example.demo.service.ActivityLogService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -12,33 +13,40 @@ import java.util.List;
 @RequestMapping("/api/logs")
 public class ActivityLogController {
 
-    private final ActivityLogService service;
+    private final ActivityLogService logService;
 
-    public ActivityLogController(ActivityLogService service) {
-        this.service = service;
+    public ActivityLogController(ActivityLogService logService) {
+        this.logService = logService;
     }
 
     @PostMapping("/{userId}/{typeId}")
-    public ActivityLog log(@PathVariable Long userId,
-                           @PathVariable Long typeId,
-                           @RequestBody ActivityLogRequest request) {
-
+    public ResponseEntity<ActivityLog> logActivity(
+            @PathVariable Long userId,
+            @PathVariable Long typeId,
+            @RequestBody ActivityLogRequest request) {
+        
         ActivityLog log = new ActivityLog();
         log.setQuantity(request.getQuantity());
         log.setActivityDate(request.getActivityDate());
-
-        return service.logActivity(userId, typeId, log);
+        
+        return ResponseEntity.ok(logService.logActivity(userId, typeId, log));
     }
 
     @GetMapping("/user/{userId}")
-    public List<ActivityLog> getByUser(@PathVariable Long userId) {
-        return service.getLogsByUser(userId);
+    public ResponseEntity<List<ActivityLog>> getLogsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(logService.getLogsByUser(userId));
     }
 
     @GetMapping("/user/{userId}/range")
-    public List<ActivityLog> getByUserAndDate(@PathVariable Long userId,
-                                              @RequestParam LocalDate start,
-                                              @RequestParam LocalDate end) {
-        return service.getLogsByUserAndDate(userId, start, end);
+    public ResponseEntity<List<ActivityLog>> getLogsByRange(
+            @PathVariable Long userId,
+            @RequestParam LocalDate start,
+            @RequestParam LocalDate end) {
+        return ResponseEntity.ok(logService.getLogsByUserAndDate(userId, start, end));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ActivityLog> getLog(@PathVariable Long id) {
+        return ResponseEntity.ok(logService.getLog(id));
     }
 }

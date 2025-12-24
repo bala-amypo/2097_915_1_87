@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.EmissionFactor;
 import com.example.demo.service.EmissionFactorService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,30 +11,29 @@ import java.util.List;
 @RequestMapping("/api/factors")
 public class EmissionFactorController {
 
-    private final EmissionFactorService service;
+    private final EmissionFactorService factorService;
 
-    public EmissionFactorController(EmissionFactorService service) {
-        this.service = service;
+    public EmissionFactorController(EmissionFactorService factorService) {
+        this.factorService = factorService;
     }
 
-    @PostMapping("/{typeId}")
-    public EmissionFactor create(@PathVariable Long typeId,
-                                 @RequestBody EmissionFactor factor) {
-        return service.createFactor(typeId, factor);
+    @PostMapping("/{activityTypeId}")
+    public ResponseEntity<EmissionFactor> createFactor(@PathVariable Long activityTypeId, @RequestBody EmissionFactor factor) {
+        return ResponseEntity.ok(factorService.createFactor(activityTypeId, factor));
     }
 
     @GetMapping("/{id}")
-    public EmissionFactor get(@PathVariable Long id) {
-        return service.getFactor(id);
+    public ResponseEntity<EmissionFactor> getFactor(@PathVariable Long id) {
+        return ResponseEntity.ok(factorService.getFactor(id));
     }
 
-    @GetMapping("/type/{typeId}")
-    public EmissionFactor getByType(@PathVariable Long typeId) {
-        return service.getFactorByType(typeId);
+    @GetMapping("/type/{activityTypeId}")
+    public ResponseEntity<EmissionFactor> getFactorByType(@PathVariable Long activityTypeId) {
+        return ResponseEntity.ok(factorService.getFactorByType(activityTypeId));
     }
-
+    
     @GetMapping
-    public List<EmissionFactor> getAll() {
-        return service.getAllFactors();
+    public ResponseEntity<List<EmissionFactor>> getAllFactors() {
+        return ResponseEntity.ok(factorService.getAllFactors());
     }
 }

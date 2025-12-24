@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ActivityType;
 import com.example.demo.service.ActivityTypeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,25 +11,24 @@ import java.util.List;
 @RequestMapping("/api/types")
 public class ActivityTypeController {
 
-    private final ActivityTypeService service;
+    private final ActivityTypeService typeService;
 
-    public ActivityTypeController(ActivityTypeService service) {
-        this.service = service;
+    public ActivityTypeController(ActivityTypeService typeService) {
+        this.typeService = typeService;
     }
 
     @PostMapping("/category/{categoryId}")
-    public ActivityType create(@PathVariable Long categoryId,
-                               @RequestBody ActivityType type) {
-        return service.createType(categoryId, type);
-    }
-
-    @GetMapping("/{id}")
-    public ActivityType get(@PathVariable Long id) {
-        return service.getType(id);
+    public ResponseEntity<ActivityType> createType(@PathVariable Long categoryId, @RequestBody ActivityType type) {
+        return ResponseEntity.ok(typeService.createType(categoryId, type));
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<ActivityType> getByCategory(@PathVariable Long categoryId) {
-        return service.getTypesByCategory(categoryId);
+    public ResponseEntity<List<ActivityType>> getTypesByCategory(@PathVariable Long categoryId) {
+        return ResponseEntity.ok(typeService.getTypesByCategory(categoryId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ActivityType> getType(@PathVariable Long id) {
+        return ResponseEntity.ok(typeService.getType(id));
     }
 }
